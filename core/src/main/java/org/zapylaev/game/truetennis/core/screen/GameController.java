@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import org.zapylaev.game.truetennis.core.Controller;
+import org.zapylaev.game.truetennis.core.gameobjects.Stick;
 
 /**
  * @author k.zapylaev <zapylaev@gmail.com>
@@ -15,8 +16,13 @@ public class GameController implements Controller {
     private final OrthographicCamera mCamera;
 
     public GameController(OrthographicCamera camera) {
-        mWorld = new World(new Vector2(0, -10), true);
+        mWorld = new World(new Vector2(0, 0), true);
         mCamera = camera;
+        init();
+    }
+
+    private void init() {
+        new Stick(mWorld);
     }
 
     @Override

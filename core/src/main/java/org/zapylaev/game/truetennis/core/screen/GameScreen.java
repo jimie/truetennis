@@ -5,7 +5,6 @@ import org.zapylaev.game.truetennis.core.Box2DRenderer;
 import org.zapylaev.game.truetennis.core.Constants;
 import org.zapylaev.game.truetennis.core.Controller;
 import org.zapylaev.game.truetennis.core.Renderer;
-import org.zapylaev.game.truetennis.core.graphics.PhysicalBox;
 
 /**
  * @author k.zapylaev <zapylaev@gmail.com>
@@ -18,7 +17,6 @@ public class GameScreen extends AbstractScreen {
 
     @Override
     public void show() {
-        System.out.println("show");
         super.show();
 
         mCamera = new OrthographicCamera(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
@@ -26,8 +24,6 @@ public class GameScreen extends AbstractScreen {
         mGameController = new GameController(mCamera);
         mGameRenderer = new GameRenderer(mGameController, mCamera);
         mDebugRenderer = new Box2DRenderer(mGameController, mCamera);
-
-        PhysicalBox box = new PhysicalBox(mGameController.getWorld());
     }
 
     @Override
