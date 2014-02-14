@@ -1,0 +1,10 @@
+*.db
+/target
+/desktop/target
+/android/target
+.idea
+*.iml
+*.class
+.DS_Store
+/out
+*.jar
