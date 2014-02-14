@@ -14,11 +14,11 @@ public class PhysicalBox {
                        float friction,
                        float restitution) {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(x, y);
+        bodyDef.position.set(x + width / 2, y + height / 2);
         bodyDef.type = type;
 
         PolygonShape polygonShape = new PolygonShape();
-        polygonShape.setAsBox(width, height);
+        polygonShape.setAsBox(width / 2, height / 2);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = polygonShape;

@@ -1,6 +1,7 @@
 package org.zapylaev.game.truetennis.core.screen;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.zapylaev.game.truetennis.core.Box2DRenderer;
 import org.zapylaev.game.truetennis.core.Constants;
 import org.zapylaev.game.truetennis.core.Controller;

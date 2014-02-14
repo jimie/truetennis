@@ -23,4 +23,9 @@ public class Box2DRenderer implements Renderer {
     public void render() {
         mDebugRenderer.render(mWorld, mCamera.combined);
     }
+
+    @Override
+    public void dispose() {
+        mDebugRenderer.dispose();
+    }
 }

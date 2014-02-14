@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import org.zapylaev.game.truetennis.core.Constants;
 import org.zapylaev.game.truetennis.core.Controller;
+import org.zapylaev.game.truetennis.core.gameobjects.InvisibleWall;
 import org.zapylaev.game.truetennis.core.gameobjects.Stick;
 
 /**
@@ -22,7 +24,10 @@ public class GameController implements Controller {
     }
 
     private void init() {
-        new Stick(mWorld);
+        new Stick(mWorld, -Constants.SCREEN_WIDTH / 2, 0 - Stick.HEIGHT / 2);
+        new Stick(mWorld, Constants.SCREEN_WIDTH / 2 - Stick.WIDTH, 0 - Stick.HEIGHT / 2);
+        new InvisibleWall(mWorld, -Constants.SCREEN_HEIGHT / 2);
+        new InvisibleWall(mWorld, Constants.SCREEN_HEIGHT / 2 - InvisibleWall.HEIGHT);
     }
 
     @Override

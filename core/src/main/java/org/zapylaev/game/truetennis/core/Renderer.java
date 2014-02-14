@@ -5,4 +5,5 @@ package org.zapylaev.game.truetennis.core;
  */
 public interface Renderer {
     void render();
+    void dispose();
 }
