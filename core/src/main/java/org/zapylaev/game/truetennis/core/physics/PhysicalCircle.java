@@ -6,6 +6,9 @@ import com.badlogic.gdx.physics.box2d.*;
  * @author k.zapylaev <zapylaev@gmail.com>
  */
 public class PhysicalCircle {
+
+    private final Body mBody;
+
     private PhysicalCircle(World world,
                            float x, float y,
                            float radius,
@@ -26,10 +29,14 @@ public class PhysicalCircle {
         fixtureDef.friction = friction;
         fixtureDef.restitution = restitution;
 
-        Body body = world.createBody(bodyDef);
-        body.createFixture(fixtureDef);
+        mBody = world.createBody(bodyDef);
+        mBody.createFixture(fixtureDef);
 
         circleShape.dispose();
+    }
+
+    public Body getBody() {
+        return mBody;
     }
 
     public static final class BoxBuilder extends Builder<PhysicalCircle> {

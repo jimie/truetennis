@@ -23,8 +23,6 @@ public class GameRenderer implements Renderer {
     public void render() {
         mMainBatch.setProjectionMatrix(mCamera.combined);
         mMainBatch.begin();
-        Texture texture = new Texture(Gdx.files.internal("libgdx-logo.png"));
-        mMainBatch.draw(texture, 0, 0, 1, 1);
         mMainBatch.end();
     }
 

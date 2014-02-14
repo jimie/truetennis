@@ -31,4 +31,8 @@ public class Ball implements Renderable {
     @Override
     public void render(SpriteBatch batch) {
     }
+
+    public void applyForce(float x, float y) {
+        mPhysicalCircle.getBody().applyForceToCenter(x, y, true);
+    }
 }
