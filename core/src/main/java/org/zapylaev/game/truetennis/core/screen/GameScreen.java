@@ -38,4 +38,13 @@ public class GameScreen extends AbstractScreen {
             mDebugRenderer.render();
         }
     }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+
+        mDebugRenderer.dispose();
+        mGameRenderer.dispose();
+        mGameController.dispose();
+    }
 }

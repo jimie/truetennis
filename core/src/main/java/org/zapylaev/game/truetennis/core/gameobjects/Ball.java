@@ -1,6 +1,7 @@
 package org.zapylaev.game.truetennis.core.gameobjects;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import org.zapylaev.game.truetennis.core.physics.PhysicalCircle;
@@ -10,7 +11,7 @@ import org.zapylaev.game.truetennis.core.physics.PhysicalCircle;
  */
 public class Ball implements Renderable {
     public static final float RADIUS = 0.5f;
-    public static final float DENSITY = 1f;
+    public static final float DENSITY = 0.1f;
     public static final float FRICTION = 1f;
     public static final float RESTITUTION = 1f;
     private final PhysicalCircle mPhysicalCircle;
@@ -34,5 +35,14 @@ public class Ball implements Renderable {
 
     public void applyForce(float x, float y) {
         mPhysicalCircle.getBody().applyForceToCenter(x, y, true);
+    }
+
+    public Vector2 getPosition() {
+        return mPhysicalCircle.getBody().getPosition();
+    }
+
+    public void reset() {
+        mPhysicalCircle.getBody().setTransform(0, 0, 0);
+        mPhysicalCircle.getBody().setLinearVelocity(0, 0);
     }
 }

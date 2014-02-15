@@ -12,7 +12,7 @@ public class InvisibleWall {
     public static final float WIDTH = Constants.SCREEN_WIDTH;
     public static final float HEIGHT = 1f;
     public static final float DENSITY = 1f;
-    public static final float FRICTION = 1f;
+    public static final float FRICTION = 0f;
     public static final float RESTITUTION = 1f;
     private PhysicalBox mPhysicalBox;
 
