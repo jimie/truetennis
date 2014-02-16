@@ -40,8 +40,8 @@ public class GameController extends InputAdapter implements Controller, MediaDis
         mStickLeft.setPrismaticJointEnabled(true);
         mStickRight.setPrismaticJointEnabled(true);
 
-        new InvisibleWall(mWorld, -Constants.SCREEN_HEIGHT / 2);
-        new InvisibleWall(mWorld, Constants.SCREEN_HEIGHT / 2 - InvisibleWall.HEIGHT);
+        new InvisibleWall(mWorld, -Constants.SCREEN_HEIGHT / 2 - InvisibleWall.HEIGHT);
+        new InvisibleWall(mWorld, Constants.SCREEN_HEIGHT / 2);
 
         mBall = new Ball(mWorld, 0, 0);
     }
@@ -62,11 +62,14 @@ public class GameController extends InputAdapter implements Controller, MediaDis
 
     private void processInput() {
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            mStickLeft.applyForceY(5);
-            mStickRight.applyForceY(5);
+            mStickLeft.applyForceY(Stick.MAX_FORCE);
         } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            mStickLeft.applyForceY(-5);
-            mStickRight.applyForceY(-5);
+            mStickLeft.applyForceY(-Stick.MAX_FORCE);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            mStickRight.applyForceY(Stick.MAX_FORCE);
+        } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            mStickRight.applyForceY(-Stick.MAX_FORCE);
         }
     }
 

@@ -9,7 +9,8 @@ import org.zapylaev.game.truetennis.core.physics.PhysicalBox;
  * @author k.zapylaev <zapylaev@gmail.com>
  */
 public class InvisibleWall {
-    public static final float WIDTH = Constants.SCREEN_WIDTH;
+    public static final float ADDITIONAL_GAP = 0.05f;
+    public static final float WIDTH = Constants.SCREEN_WIDTH - Stick.WIDTH * 2 - ADDITIONAL_GAP * 2;
     public static final float HEIGHT = 1f;
     public static final float DENSITY = 1f;
     public static final float FRICTION = 0f;
@@ -18,7 +19,7 @@ public class InvisibleWall {
 
     public InvisibleWall(World world, float y) {
         mPhysicalBox = (PhysicalBox) new PhysicalBox.BoxBuilder()
-                .setX(-Constants.SCREEN_WIDTH / 2)
+                .setX(-Constants.SCREEN_WIDTH / 2 + Stick.WIDTH + ADDITIONAL_GAP)
                 .setY(y)
                 .setWidth(WIDTH)
                 .setHeight(HEIGHT)

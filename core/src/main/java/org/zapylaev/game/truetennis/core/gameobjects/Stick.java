@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
+import org.zapylaev.game.truetennis.core.Constants;
 import org.zapylaev.game.truetennis.core.physics.PhysicalBox;
 
 /**
@@ -18,6 +19,7 @@ public class Stick implements Renderable {
     public static final float FRICTION = 1f;
     public static final float RESTITUTION = 1f;
     public static final float LINEAR_DAMPING = 1f;
+    public static final float MAX_FORCE = 10f;
 
     private final World mWorld;
     private final PhysicalBox mPhysicalBox;
@@ -51,6 +53,9 @@ public class Stick implements Renderable {
         if (enabled) {
             PrismaticJointDef prismaticJointDef = new PrismaticJointDef();
             prismaticJointDef.initialize(mWorld.createBody(new BodyDef()), mPhysicalBox.getBody(), new Vector2(0, 0), new Vector2(0 , 1));
+            prismaticJointDef.enableLimit = true;
+            prismaticJointDef.upperTranslation = Constants.SCREEN_HEIGHT / 2 - Stick.HEIGHT / 2;
+            prismaticJointDef.lowerTranslation = -Constants.SCREEN_HEIGHT / 2 + Stick.HEIGHT / 2;
 
             mPrismaticJoint = (PrismaticJoint) mWorld.createJoint(prismaticJointDef);
         } else {
