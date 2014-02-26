@@ -1,10 +1,12 @@
 *.db
-/target
-/desktop/target
-/android/target
+/target/*
+/desktop/target/*
+/android/target/*
 .idea
 *.iml
 *.class
 .DS_Store
-/out
+/out/*
 *.jar
+/android/libs/*
+/core/target/*

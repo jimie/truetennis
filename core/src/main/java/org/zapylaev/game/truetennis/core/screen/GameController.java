@@ -6,7 +6,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import com.sun.media.jfxmediaimpl.MediaDisposer;
+import com.badlogic.gdx.utils.Disposable;
 import org.zapylaev.game.truetennis.core.Constants;
 import org.zapylaev.game.truetennis.core.Controller;
 import org.zapylaev.game.truetennis.core.gameobjects.Ball;
@@ -16,7 +16,7 @@ import org.zapylaev.game.truetennis.core.gameobjects.Stick;
 /**
  * @author k.zapylaev <zapylaev@gmail.com>
  */
-public class GameController extends InputAdapter implements Controller, MediaDisposer.Disposable {
+public class GameController extends InputAdapter implements Controller, Disposable {
 
     private final World mWorld;
     private final OrthographicCamera mCamera;

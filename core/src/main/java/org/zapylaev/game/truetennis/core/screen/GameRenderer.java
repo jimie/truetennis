@@ -1,8 +1,6 @@
 package org.zapylaev.game.truetennis.core.screen;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.zapylaev.game.truetennis.core.Controller;
 import org.zapylaev.game.truetennis.core.Renderer;
