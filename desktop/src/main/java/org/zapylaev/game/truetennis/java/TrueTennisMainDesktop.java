@@ -8,6 +8,8 @@ public class TrueTennisMainDesktop {
     public static void main(String[] args) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.useGL20 = true;
+        config.width = 960;
+        config.height = 600;
         new LwjglApplication(new TrueTennisMain(), config);
     }
 }

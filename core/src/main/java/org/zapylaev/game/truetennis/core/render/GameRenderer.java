@@ -1,18 +1,18 @@
-package org.zapylaev.game.truetennis.core.screen;
+package org.zapylaev.game.truetennis.core.render;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import org.zapylaev.game.truetennis.core.Controller;
-import org.zapylaev.game.truetennis.core.Renderer;
+import org.zapylaev.game.truetennis.core.IController;
+import org.zapylaev.game.truetennis.core.IRenderer;
 
 /**
  * @author k.zapylaev <zapylaev@gmail.com>
  */
-public class GameRenderer implements Renderer {
+public class GameRenderer implements IRenderer {
     private final OrthographicCamera mCamera;
-    private SpriteBatch mMainBatch;
+    private final SpriteBatch mMainBatch;
 
-    public GameRenderer(Controller controller, OrthographicCamera camera) {
+    public GameRenderer(OrthographicCamera camera) {
         mCamera = camera;
         mMainBatch = new SpriteBatch();
     }
@@ -22,6 +22,11 @@ public class GameRenderer implements Renderer {
         mMainBatch.setProjectionMatrix(mCamera.combined);
         mMainBatch.begin();
         mMainBatch.end();
+    }
+
+    @Override
+    public void updateModelState(String modelState) {
+        System.out.println("upd state: " + modelState);
     }
 
     @Override
