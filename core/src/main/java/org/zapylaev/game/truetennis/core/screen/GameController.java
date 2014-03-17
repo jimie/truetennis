@@ -23,16 +23,19 @@ public class GameController extends InputAdapter implements Screen, IModelListen
     }
     private IModel mModel;
     private IRenderer mGameRenderer;
-    private OrthographicCamera mCamera;
+    private OrthographicCamera mMainCamera;
+    private OrthographicCamera mHUDCamera;
     private State mState;
     private Json mJson;
 
     @Override
     public void show() {
         mModel = new PhysicalModel();
-        mCamera = new OrthographicCamera(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
-        mCamera.update();
-        mGameRenderer = new GameRenderer(mCamera);
+        mMainCamera = new OrthographicCamera(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+        mMainCamera.update();
+        mHUDCamera = new OrthographicCamera(Constants.HUD_SCREEN_WIDTH, Constants.HUD_SCREEN_HEIGHT);
+        mHUDCamera.update();
+        mGameRenderer = new GameRenderer(mMainCamera, mHUDCamera);
         mModel.addModelListener(this);
         Gdx.input.setInputProcessor(this);
         mState = State.IDLE;
@@ -43,7 +46,7 @@ public class GameController extends InputAdapter implements Screen, IModelListen
     public void render(float delta) {
         mModel.update();
         mGameRenderer.render();
-        mModel.debugRender(mCamera);
+        mModel.debugRender(mMainCamera);
     }
 
     @Override
@@ -76,8 +79,10 @@ public class GameController extends InputAdapter implements Screen, IModelListen
     @Override
     public void resize(int width, int height) {
         float aspectRatio = (float) width / height;
-        mCamera.viewportWidth = Constants.SCREEN_HEIGHT * aspectRatio;
-        mCamera.update();
+        mMainCamera.viewportWidth = Constants.SCREEN_HEIGHT * aspectRatio;
+        mMainCamera.update();
+        mHUDCamera.viewportWidth = Constants.HUD_SCREEN_HEIGHT * aspectRatio;
+        mHUDCamera.update();
     }
 
     @Override

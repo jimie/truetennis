@@ -5,7 +5,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.zapylaev.game.truetennis.core.Assets;
 import org.zapylaev.game.truetennis.core.domain.Ball;
 
-public class BallTexture implements ITexture<Ball> {
+/**
+ * @author k.zapylaev <zapylaev@gmail.com>
+ */
+class BallTexture implements ITexture<Ball> {
     private final Texture mTexture;
 
     public BallTexture() {
