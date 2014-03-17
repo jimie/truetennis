@@ -1,4 +1,4 @@
-truetennis
+True Pong
 ==========
 
 Classic pong game on libgdx
