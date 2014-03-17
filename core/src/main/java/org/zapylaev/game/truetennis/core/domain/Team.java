@@ -22,13 +22,8 @@
  * SOFTWARE.
  */
 
-package org.zapylaev.game.truetennis.core.render;
+package org.zapylaev.game.truetennis.core.domain;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-/**
- * @author k.zapylaev <zapylaev@gmail.com>
- */
-interface ITexture<T> {
-    void draw(SpriteBatch batch, T domainObj);
+public enum Team {
+    LEFT, RIGHT
 }

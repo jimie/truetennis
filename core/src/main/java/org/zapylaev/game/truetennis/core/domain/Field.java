@@ -30,6 +30,7 @@ public class Field {
     private Ball mBall;
     private int mLeftPlayerScore;
     private int mRightPlayerScore;
+    private Team mLastWinTeam;
 
     public Player getLeftPlayer() {
         return mLeftPlayer;
@@ -69,5 +70,13 @@ public class Field {
 
     public void setRightPlayerScore(int rightPlayerScore) {
         mRightPlayerScore = rightPlayerScore;
+    }
+
+    public Team getLastWinTeam() {
+        return mLastWinTeam;
+    }
+
+    public void setLastWinTeam(Team lastWinTeam) {
+        mLastWinTeam = lastWinTeam;
     }
 }

@@ -30,6 +30,12 @@ import org.zapylaev.game.truetennis.core.IRenderer;
 import org.zapylaev.game.truetennis.core.domain.Ball;
 import org.zapylaev.game.truetennis.core.domain.Field;
 import org.zapylaev.game.truetennis.core.domain.Player;
+import org.zapylaev.game.truetennis.core.domain.Team;
+import org.zapylaev.game.truetennis.core.render.effects.IEffect;
+import org.zapylaev.game.truetennis.core.render.effects.WinEffect;
+import org.zapylaev.game.truetennis.core.render.textures.BallTexture;
+import org.zapylaev.game.truetennis.core.render.textures.ITexture;
+import org.zapylaev.game.truetennis.core.render.textures.PlayerTexture;
 
 /**
  * @author k.zapylaev <zapylaev@gmail.com>
@@ -42,6 +48,7 @@ public class GameRenderer implements IRenderer {
     private Field mField;
     private final ITexture<Player> mPlayerTexture;
     private final ITexture<Ball> mBallTexture;
+    private final IEffect<Team> mWinEffect;
 
     public GameRenderer(OrthographicCamera camera, OrthographicCamera hudCamera) {
         mCamera = camera;
@@ -49,6 +56,7 @@ public class GameRenderer implements IRenderer {
         mPlayerTexture = new PlayerTexture();
         mBallTexture = new BallTexture();
         mHUD = new HUD(hudCamera);
+        mWinEffect = new WinEffect(hudCamera);
     }
 
     @Override
@@ -61,12 +69,24 @@ public class GameRenderer implements IRenderer {
         mBallTexture.draw(mMainBatch, mField.getBall());
         mMainBatch.end();
 
+        mWinEffect.draw(mMainBatch, mField.getLastWinTeam());
+
         mHUD.render(mMainBatch, mField);
     }
 
     @Override
     public void updateModel(Field model) {
         mField = model;
+    }
+
+    @Override
+    public void playWinEffect() {
+        mWinEffect.play();
+    }
+
+    @Override
+    public void stopWinEffect() {
+        mWinEffect.stop();
     }
 
     @Override

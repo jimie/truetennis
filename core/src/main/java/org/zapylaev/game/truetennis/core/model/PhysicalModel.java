@@ -32,6 +32,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Json;
 import org.zapylaev.game.truetennis.core.Constants;
 import org.zapylaev.game.truetennis.core.Debug;
+import org.zapylaev.game.truetennis.core.GamePrefs;
+import org.zapylaev.game.truetennis.core.domain.Team;
 import org.zapylaev.game.truetennis.core.domain.Ball;
 import org.zapylaev.game.truetennis.core.domain.Field;
 import org.zapylaev.game.truetennis.core.domain.Player;
@@ -51,6 +53,7 @@ public class PhysicalModel implements IModel {
     private final Player mLeftPlayer;
     private final Player mRightPlayer;
     private final Ball mBall;
+    private int mWinScore;
 
     public PhysicalModel() {
         mWorld = new World(new Vector2(0, 0), true);
@@ -77,6 +80,7 @@ public class PhysicalModel implements IModel {
         mField.setRightPlayer(mRightPlayer);
         mField.setBall(mBall);
         mJson = new Json();
+        mWinScore = GamePrefs.getInstance().getWinScore();
     }
 
     @Override
@@ -89,6 +93,7 @@ public class PhysicalModel implements IModel {
         processInput();
         mWorld.step(Gdx.graphics.getDeltaTime(), 8, 3);
         checkGoal();
+        checkWin();
 
         for (IModelListener modelListener : mModelListeners) {
             modelListener.onModelUpdate(obtainModelState());
@@ -104,11 +109,32 @@ public class PhysicalModel implements IModel {
 
     private void checkGoal() {
         float ballX = mBox2dBall.getPosition().x;
-        if ((ballX > Constants.SCREEN_WIDTH / 2) ||
-                (ballX < -Constants.SCREEN_WIDTH / 2)){
+        boolean goal = false;
+        if (ballX > Constants.SCREEN_WIDTH / 2) {
+            goal = true;
+            mField.setLeftPlayerScore(mField.getLeftPlayerScore() + 1);
+        } else if (ballX < -Constants.SCREEN_WIDTH / 2) {
+            goal = true;
+            mField.setRightPlayerScore(mField.getRightPlayerScore() + 1);
+        }
+        if (goal) {
             mBox2dBall.reset();
             for (IModelListener modelListener : mModelListeners) {
                 modelListener.goalEvent();
+            }
+        }
+    }
+
+    private void checkWin() {
+        if (mField.getLeftPlayerScore() >= mWinScore) {
+            for (IModelListener modelListener : mModelListeners) {
+                modelListener.winEvent();
+                mField.setLastWinTeam(Team.LEFT);
+            }
+        } else if (mField.getRightPlayerScore() >= mWinScore) {
+            for (IModelListener modelListener : mModelListeners) {
+                modelListener.winEvent();
+                mField.setLastWinTeam(Team.RIGHT);
             }
         }
     }
@@ -137,6 +163,14 @@ public class PhysicalModel implements IModel {
     @Override
     public void startRound() {
         mBox2dBall.applyImpulse(0.7f, 0);
+    }
+
+    @Override
+    public void resetRound() {
+        mLeftPlayer.setPosition(new Vector2(0, 0));
+        mRightPlayer.setPosition(new Vector2(0, 0));
+        mField.setLeftPlayerScore(0);
+        mField.setRightPlayerScore(0);
     }
 
     @Override

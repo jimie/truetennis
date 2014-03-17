@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package org.zapylaev.game.truetennis.core.render;
+package org.zapylaev.game.truetennis.core.render.textures;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -32,7 +32,7 @@ import org.zapylaev.game.truetennis.core.domain.Ball;
 /**
  * @author k.zapylaev <zapylaev@gmail.com>
  */
-class BallTexture implements ITexture<Ball> {
+public class BallTexture implements ITexture<Ball> {
     private final Texture mTexture;
 
     public BallTexture() {

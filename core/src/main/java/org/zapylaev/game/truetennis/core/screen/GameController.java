@@ -33,6 +33,7 @@ import com.badlogic.gdx.utils.Json;
 import org.zapylaev.game.truetennis.core.Constants;
 import org.zapylaev.game.truetennis.core.IRenderer;
 import org.zapylaev.game.truetennis.core.domain.Field;
+import org.zapylaev.game.truetennis.core.domain.Team;
 import org.zapylaev.game.truetennis.core.model.IModel;
 import org.zapylaev.game.truetennis.core.model.IModelListener;
 import org.zapylaev.game.truetennis.core.model.PhysicalModel;
@@ -43,7 +44,7 @@ import org.zapylaev.game.truetennis.core.render.GameRenderer;
  */
 public class GameController extends InputAdapter implements Screen, IModelListener {
     enum State {
-        IDLE, GAME
+        IDLE, END_GAME, GAME
     }
     private IModel mModel;
     private IRenderer mGameRenderer;
@@ -75,8 +76,14 @@ public class GameController extends InputAdapter implements Screen, IModelListen
 
     @Override
     public boolean keyUp(int keycode) {
-        if (mState == State.IDLE) {
-            if (keycode == Input.Keys.SPACE) {
+        if (keycode == Input.Keys.SPACE) {
+            if (mState == State.IDLE) {
+                mModel.startRound();
+                mState = State.GAME;
+                return true;
+            } else if (mState == State.END_GAME) {
+                mGameRenderer.stopWinEffect();
+                mModel.resetRound();
                 mModel.startRound();
                 mState = State.GAME;
                 return true;
@@ -123,5 +130,11 @@ public class GameController extends InputAdapter implements Screen, IModelListen
     @Override
     public void goalEvent() {
         mState = State.IDLE;
+    }
+
+    @Override
+    public void winEvent() {
+        mState = State.END_GAME;
+        mGameRenderer.playWinEffect();
     }
 }

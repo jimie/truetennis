@@ -22,15 +22,13 @@
  * SOFTWARE.
  */
 
-package org.zapylaev.game.truetennis.core.model;
+package org.zapylaev.game.truetennis.core.render.textures;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public interface IModel {
-    void addModelListener(IModelListener listener);
-    void update();
-    void dispose();
-    void startRound();
-    void resetRound();
-    void debugRender(OrthographicCamera camera);
+/**
+ * @author k.zapylaev <zapylaev@gmail.com>
+ */
+public interface ITexture<T> {
+    void draw(SpriteBatch batch, T domainObj);
 }

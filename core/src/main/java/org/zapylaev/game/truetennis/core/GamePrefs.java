@@ -33,7 +33,7 @@ import com.badlogic.gdx.Preferences;
 public class GamePrefs {
 
     private static final String PREFS_NAME = "org.zapylaev.game.truetennis";
-    private static final String SOME_PREF = "SOME_PREF";
+    private static final String WIN_SCORE = "WIN_SCORE";
 
     private static GamePrefs sInstance;
     private Preferences mPreferences;
@@ -48,12 +48,12 @@ public class GamePrefs {
         return sInstance;
     }
 
-    public String getTemp() {
-        return mPreferences.getString(SOME_PREF, "temp");
+    public int getWinScore() {
+        return mPreferences.getInteger(WIN_SCORE, 2);
     }
 
-    public void setTemp(String temp) {
-        mPreferences.putString(SOME_PREF, temp);
+    public void setWinScore(int winScore) {
+        mPreferences.putInteger(WIN_SCORE, winScore);
         mPreferences.flush();
     }
 }

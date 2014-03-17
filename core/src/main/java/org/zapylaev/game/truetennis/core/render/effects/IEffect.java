@@ -22,15 +22,12 @@
  * SOFTWARE.
  */
 
-package org.zapylaev.game.truetennis.core.model;
+package org.zapylaev.game.truetennis.core.render.effects;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public interface IModel {
-    void addModelListener(IModelListener listener);
-    void update();
-    void dispose();
-    void startRound();
-    void resetRound();
-    void debugRender(OrthographicCamera camera);
+public interface IEffect<T> {
+    void draw(SpriteBatch batch, T domainObj);
+    void play();
+    void stop();
 }
