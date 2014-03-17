@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Json;
 import org.zapylaev.game.truetennis.core.Constants;
+import org.zapylaev.game.truetennis.core.Debug;
 import org.zapylaev.game.truetennis.core.domain.Ball;
 import org.zapylaev.game.truetennis.core.domain.Field;
 import org.zapylaev.game.truetennis.core.domain.Player;
@@ -14,7 +15,7 @@ import org.zapylaev.game.truetennis.core.domain.Player;
 import java.util.*;
 
 public class PhysicalModel implements IModel {
-    private final DebugRenderer mDebugRenderer;
+    private DebugRenderer mDebugRenderer;
     private final World mWorld;
     private final Box2dBall mBox2dBall;
     private final Box2dStick mBox2dStickLeft;
@@ -38,11 +39,16 @@ public class PhysicalModel implements IModel {
 
         mBox2dBall = new Box2dBall(mWorld, 0, 0);
         mModelListeners = new ArrayList<IModelListener>();
-        mDebugRenderer = new DebugRenderer();
+        if (Debug.RENDER_BOX2D) {
+            mDebugRenderer = new DebugRenderer();
+        }
         mField = new Field();
         mLeftPlayer = new Player();
+        mLeftPlayer.setSize(new Vector2(Box2dStick.WIDTH, Box2dStick.HEIGHT));
         mRightPlayer = new Player();
+        mRightPlayer.setSize(new Vector2(Box2dStick.WIDTH, Box2dStick.HEIGHT));
         mBall = new Ball();
+        mBall.setRadius(Box2dBall.RADIUS);
         mField.setLeftPlayer(mLeftPlayer);
         mField.setRightPlayer(mRightPlayer);
         mField.setBall(mBall);
@@ -99,7 +105,9 @@ public class PhysicalModel implements IModel {
     @Override
     public void dispose() {
         mWorld.dispose();
-        mDebugRenderer.dispose();
+        if (mDebugRenderer != null) {
+            mDebugRenderer.dispose();
+        }
     }
 
     @Override
@@ -109,6 +117,8 @@ public class PhysicalModel implements IModel {
 
     @Override
     public void debugRender(OrthographicCamera camera) {
-        mDebugRenderer.render(mWorld, camera);
+        if (mDebugRenderer != null) {
+            mDebugRenderer.render(mWorld, camera);
+        }
     }
 }

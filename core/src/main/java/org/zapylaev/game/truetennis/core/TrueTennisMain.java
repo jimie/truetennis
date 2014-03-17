@@ -9,12 +9,13 @@ public class TrueTennisMain extends Game {
 
     @Override
     public void create() {
+        Assets.getInstance().init();
         setScreen(new GameController());
     }
 
     @Override
     public void render() {
-        Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
+        Gdx.gl.glClearColor(0.4f, 0.62f, 0.82f, 1f);
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
         super.render();
     }

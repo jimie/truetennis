@@ -5,8 +5,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import org.zapylaev.game.truetennis.core.IRenderer;
+import com.badlogic.gdx.utils.Json;
 import org.zapylaev.game.truetennis.core.Constants;
+import org.zapylaev.game.truetennis.core.IRenderer;
+import org.zapylaev.game.truetennis.core.domain.Field;
 import org.zapylaev.game.truetennis.core.model.IModel;
 import org.zapylaev.game.truetennis.core.model.IModelListener;
 import org.zapylaev.game.truetennis.core.model.PhysicalModel;
@@ -23,6 +25,7 @@ public class GameController extends InputAdapter implements Screen, IModelListen
     private IRenderer mGameRenderer;
     private OrthographicCamera mCamera;
     private State mState;
+    private Json mJson;
 
     @Override
     public void show() {
@@ -33,6 +36,7 @@ public class GameController extends InputAdapter implements Screen, IModelListen
         mModel.addModelListener(this);
         Gdx.input.setInputProcessor(this);
         mState = State.IDLE;
+        mJson = new Json();
     }
 
     @Override
@@ -84,7 +88,7 @@ public class GameController extends InputAdapter implements Screen, IModelListen
 
     @Override
     public void onModelUpdate(String modelState) {
-        mGameRenderer.updateModelState(modelState);
+        mGameRenderer.updateModel(mJson.fromJson(Field.class, modelState));
     }
 
     @Override
