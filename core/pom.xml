@@ -8,6 +8,10 @@
         <version>1.0</version>
     </parent>
 
+    <properties>
+        <main.basedir>${project.basedir}/..</main.basedir>
+    </properties>
+
     <artifactId>truetennis-core</artifactId>
     <packaging>jar</packaging>
     <name>TrueTennisMain Core</name>
@@ -17,6 +21,11 @@
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx</artifactId>
             <version>${gdx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.nuggeta</groupId>
+            <artifactId>nuggeta-main</artifactId>
+            <version>1.0</version>
         </dependency>
     </dependencies>
 

@@ -13,6 +13,7 @@
     <name>TrueTennisMain desktop</name>
 
     <properties>
+        <main.basedir>${project.basedir}/..</main.basedir>
         <mainClass>org.zapylaev.game.truetennis.java.TrueTennisMainDesktop</mainClass>
     </properties>
 
@@ -40,6 +41,12 @@
             <artifactId>gdx-platform</artifactId>
             <version>${gdx.version}</version>
             <classifier>natives-desktop</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.nuggeta</groupId>
+            <artifactId>nuggeta-desktop</artifactId>
+            <version>1.0</version>
         </dependency>
     </dependencies>
 

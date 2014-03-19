@@ -14,12 +14,17 @@
         <android.maven.version>3.6.0</android.maven.version>
         <gwt.version>2.5.0</gwt.version>
         <gwt.maven.version>2.5.0</gwt.maven.version>
+        <main.basedir>${project.basedir}</main.basedir>
     </properties>
 
     <repositories>
         <repository>
             <id>gdx-nightlies</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>local-repo</id>
+            <url>file://${main.basedir}/mvn-local</url>
         </repository>
     </repositories>
 
