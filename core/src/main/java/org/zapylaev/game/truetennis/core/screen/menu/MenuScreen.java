@@ -22,46 +22,63 @@
  * SOFTWARE.
  */
 
-package org.zapylaev.game.truetennis.core;
+package org.zapylaev.game.truetennis.core.screen.menu;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import org.zapylaev.game.truetennis.core.Constants;
+import org.zapylaev.game.truetennis.core.TrueTennisMain;
 
-/**
- * @author k.zapylaev <zapylaev@gmail.com>
- */
-public class Assets implements Disposable {
-    private static Assets instance;
+public abstract class MenuScreen implements Screen {
 
-    public static Assets getInstance() {
-        if (instance == null) {
-            instance = new Assets();
-        }
-        return instance;
+    protected TrueTennisMain mGame;
+    protected Stage mStage;
+    protected Skin mSkin;
+
+    public MenuScreen(TrueTennisMain game) {
+        mGame = game;
     }
 
-    private Assets() {}
+    @Override
+    public void render(float delta) {
+        Gdx.gl.glClearColor(0.4f, 0.62f, 0.82f, 1f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        mStage.act();
+        mStage.draw();
+    }
 
-    public Texture player;
-    public Texture ball;
-    public BitmapFont fontDroidSans17;
+    @Override
+    public void show() {
+        mSkin = new Skin(Gdx.files.internal("skin/uiskin.json"));
+        mStage = new Stage(Constants.HUD_SCREEN_WIDTH, Constants.HUD_SCREEN_HEIGHT);
+        Gdx.input.setInputProcessor(mStage);
+    }
 
-    public void init() {
-        player = new Texture(Gdx.files.internal("img/player.png"));
-        ball = new Texture(Gdx.files.internal("img/ball.png"));
-        player.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        ball.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+    @Override
+    public void resize(int width, int height) {
+    }
 
-        fontDroidSans17 = new BitmapFont(Gdx.files.internal("fonts/DroidSans17.fnt"));
-        fontDroidSans17.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
     }
 
     @Override
     public void dispose() {
-        player.dispose();
-        ball.dispose();
-        fontDroidSans17.dispose();
+        mSkin.dispose();
+        mStage.dispose();
     }
 }

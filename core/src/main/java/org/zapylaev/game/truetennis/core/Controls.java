@@ -25,43 +25,23 @@
 package org.zapylaev.game.truetennis.core;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.Input;
+import org.zapylaev.game.truetennis.core.domain.Team;
+import org.zapylaev.game.truetennis.core.model.IModel;
 
-/**
- * @author k.zapylaev <zapylaev@gmail.com>
- */
-public class Assets implements Disposable {
-    private static Assets instance;
+public class Controls {
 
-    public static Assets getInstance() {
-        if (instance == null) {
-            instance = new Assets();
+    private final IModel mModel;
+
+    public Controls(IModel model) {
+        mModel = model;
+    }
+
+    public void applyControls() {
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            mModel.moveUp(Team.LEFT);
+        } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            mModel.moveDown(Team.LEFT);
         }
-        return instance;
-    }
-
-    private Assets() {}
-
-    public Texture player;
-    public Texture ball;
-    public BitmapFont fontDroidSans17;
-
-    public void init() {
-        player = new Texture(Gdx.files.internal("img/player.png"));
-        ball = new Texture(Gdx.files.internal("img/ball.png"));
-        player.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        ball.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-
-        fontDroidSans17 = new BitmapFont(Gdx.files.internal("fonts/DroidSans17.fnt"));
-        fontDroidSans17.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-    }
-
-    @Override
-    public void dispose() {
-        player.dispose();
-        ball.dispose();
-        fontDroidSans17.dispose();
     }
 }

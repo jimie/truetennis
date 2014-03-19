@@ -54,7 +54,7 @@ class Box2dStick extends Box2dRect {
     }
 
     void applyForceY(float amount) {
-        mBody.applyForceToCenter(0 , amount, true);
+        mBody.applyForceToCenter(0, amount, true);
     }
 
     void setPrismaticJointEnabled(boolean enabled) {

@@ -90,7 +90,6 @@ public class PhysicalModel implements IModel {
 
     @Override
     public void update() {
-        processInput();
         mWorld.step(Gdx.graphics.getDeltaTime(), 8, 3);
         checkGoal();
         checkWin();
@@ -139,24 +138,37 @@ public class PhysicalModel implements IModel {
         }
     }
 
-    private void processInput() {
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            mBox2dStickLeft.applyForceY(Box2dStick.MAX_FORCE);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            mBox2dStickLeft.applyForceY(-Box2dStick.MAX_FORCE);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            mBox2dStickRight.applyForceY(Box2dStick.MAX_FORCE);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            mBox2dStickRight.applyForceY(-Box2dStick.MAX_FORCE);
-        }
-    }
-
     @Override
     public void dispose() {
         mWorld.dispose();
         if (mDebugRenderer != null) {
             mDebugRenderer.dispose();
+        }
+    }
+
+    @Override
+    public void joinGame(String gameId) {
+
+    }
+
+    @Override
+    public void moveUp(Team team) {
+        if (team == Team.LEFT) {
+            System.out.println("LEFT UP");
+            mBox2dStickLeft.applyForceY(Box2dStick.MAX_FORCE);
+        } else {
+            System.out.println("RIGHT UP");
+
+            mBox2dStickRight.applyForceY(Box2dStick.MAX_FORCE);
+        }
+    }
+
+    @Override
+    public void moveDown(Team team) {
+        if (team == Team.LEFT) {
+            mBox2dStickLeft.applyForceY(-Box2dStick.MAX_FORCE);
+        } else {
+            mBox2dStickRight.applyForceY(-Box2dStick.MAX_FORCE);
         }
     }
 

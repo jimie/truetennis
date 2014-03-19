@@ -43,6 +43,11 @@ import org.zapylaev.game.truetennis.core.render.GameRenderer;
  * @author k.zapylaev <zapylaev@gmail.com>
  */
 public class GameController extends InputAdapter implements Screen, IModelListener {
+
+    public GameController(IModel model) {
+        mModel = model;
+    }
+
     enum State {
         IDLE, END_GAME, GAME
     }
@@ -55,7 +60,6 @@ public class GameController extends InputAdapter implements Screen, IModelListen
 
     @Override
     public void show() {
-        mModel = new PhysicalModel();
         mMainCamera = new OrthographicCamera(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
         mMainCamera.update();
         mHUDCamera = new OrthographicCamera(Constants.HUD_SCREEN_WIDTH, Constants.HUD_SCREEN_HEIGHT);

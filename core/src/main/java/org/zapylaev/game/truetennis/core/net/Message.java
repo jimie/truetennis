@@ -22,19 +22,9 @@
  * SOFTWARE.
  */
 
-package org.zapylaev.game.truetennis.core.model;
+package org.zapylaev.game.truetennis.core.net;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import org.zapylaev.game.truetennis.core.domain.Team;
-
-public interface IModel {
-    void addModelListener(IModelListener listener);
-    void update();
-    void dispose();
-    void joinGame(String gameId);
-    void moveUp(Team team);
-    void moveDown(Team team);
-    void startRound();
-    void resetRound();
-    void debugRender(OrthographicCamera camera);
+public class Message {
+    public static final String UP = "up";
+    public static final String DOWN = "down";
 }
