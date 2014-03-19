@@ -25,7 +25,6 @@
 package org.zapylaev.game.truetennis.core.model;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -33,10 +32,10 @@ import com.badlogic.gdx.utils.Json;
 import org.zapylaev.game.truetennis.core.Constants;
 import org.zapylaev.game.truetennis.core.Debug;
 import org.zapylaev.game.truetennis.core.GamePrefs;
-import org.zapylaev.game.truetennis.core.domain.Team;
 import org.zapylaev.game.truetennis.core.domain.Ball;
 import org.zapylaev.game.truetennis.core.domain.Field;
 import org.zapylaev.game.truetennis.core.domain.Player;
+import org.zapylaev.game.truetennis.core.domain.Team;
 
 import java.util.*;
 
@@ -154,11 +153,8 @@ public class PhysicalModel implements IModel {
     @Override
     public void moveUp(Team team) {
         if (team == Team.LEFT) {
-            System.out.println("LEFT UP");
             mBox2dStickLeft.applyForceY(Box2dStick.MAX_FORCE);
         } else {
-            System.out.println("RIGHT UP");
-
             mBox2dStickRight.applyForceY(Box2dStick.MAX_FORCE);
         }
     }

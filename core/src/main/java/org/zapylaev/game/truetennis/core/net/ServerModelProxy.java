@@ -25,32 +25,30 @@
 package org.zapylaev.game.truetennis.core.net;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.nuggeta.NuggetaPlug;
 import com.nuggeta.network.Message;
 import com.nuggeta.ngdl.nobjects.CreateGameResponse;
 import com.nuggeta.ngdl.nobjects.NRawMessage;
 import org.zapylaev.game.truetennis.core.domain.Team;
 import org.zapylaev.game.truetennis.core.model.IModel;
 import org.zapylaev.game.truetennis.core.model.IModelListener;
+import org.zapylaev.game.truetennis.core.net.communicator.INetCommunicator;
 
 import java.util.*;
 
 public class ServerModelProxy implements IModel {
 
     private final IModel mModel;
-    private final NuggetaPlug mNuggetaPlug;
+    private final INetCommunicator mNuggetaPlug;
     private String mGameId;
 
-    public ServerModelProxy(IModel model, NuggetaPlug nuggetaPlug) {
+    public ServerModelProxy(IModel model, INetCommunicator nuggetaPlug) {
         mModel = model;
         mNuggetaPlug = nuggetaPlug;
 
         mModel.addModelListener(new IModelListener() {
             @Override
             public void onModelUpdate(String modelState) {
-                NRawMessage rawMessage = new NRawMessage();
-                rawMessage.setContent(modelState);
-                mNuggetaPlug.sendGameMessage(rawMessage, mGameId);
+                mNuggetaPlug.sendGameMessage(modelState, mGameId);
             }
 
             @Override
@@ -72,7 +70,7 @@ public class ServerModelProxy implements IModel {
 
     @Override
     public void update() {
-        List<Message> messages = mNuggetaPlug.pump();
+        List<Message> messages = mNuggetaPlug.retrieveLastMessages();
         for (Message message : messages) {
             if (message instanceof CreateGameResponse) {
                 CreateGameResponse createGameResponse = (CreateGameResponse) message;

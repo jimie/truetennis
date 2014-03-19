@@ -25,7 +25,6 @@
 package org.zapylaev.game.truetennis.core.net;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.nuggeta.NuggetaPlug;
 import com.nuggeta.ngdl.nobjects.GetGamesResponse;
 import com.nuggeta.ngdl.nobjects.GetGamesStatus;
 import com.nuggeta.ngdl.nobjects.NGame;
@@ -33,16 +32,17 @@ import com.nuggeta.ngdl.nobjects.NRawMessage;
 import org.zapylaev.game.truetennis.core.domain.Team;
 import org.zapylaev.game.truetennis.core.model.IModel;
 import org.zapylaev.game.truetennis.core.model.IModelListener;
+import org.zapylaev.game.truetennis.core.net.communicator.INetCommunicator;
 
 import java.util.*;
 
 public class ClientModelProxy implements IModel {
 
-    private NuggetaPlug mNuggetaPlug;
+    private INetCommunicator mNuggetaPlug;
     private String mGameId;
     private IModelListener mListener;
 
-    public ClientModelProxy(NuggetaPlug nuggetaPlug) {
+    public ClientModelProxy(INetCommunicator nuggetaPlug) {
         mNuggetaPlug = nuggetaPlug;
     }
 
@@ -53,7 +53,7 @@ public class ClientModelProxy implements IModel {
 
     @Override
     public void update() {
-        List<com.nuggeta.network.Message> messages = mNuggetaPlug.pump();
+        List<com.nuggeta.network.Message> messages = mNuggetaPlug.retrieveLastMessages();
         for (com.nuggeta.network.Message message : messages) {
             if (message instanceof GetGamesResponse) {
                 GetGamesResponse getGamesResponse = (GetGamesResponse) message;
@@ -88,16 +88,12 @@ public class ClientModelProxy implements IModel {
 
     @Override
     public void moveUp(Team team) {
-        NRawMessage rawMessage = new NRawMessage();
-        rawMessage.setContent(Messages.UP);
-        mNuggetaPlug.sendGameMessage(rawMessage, mGameId);
+        mNuggetaPlug.sendGameMessage(Messages.UP, mGameId);
     }
 
     @Override
     public void moveDown(Team team) {
-        NRawMessage rawMessage = new NRawMessage();
-        rawMessage.setContent(Messages.DOWN);
-        mNuggetaPlug.sendGameMessage(rawMessage, mGameId);
+        mNuggetaPlug.sendGameMessage(Messages.DOWN, mGameId);
     }
 
     @Override
