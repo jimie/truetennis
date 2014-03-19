@@ -26,9 +26,8 @@ package org.zapylaev.game.truetennis.core.net;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.nuggeta.NuggetaPlug;
-import com.nuggeta.ngdl.nobjects.GetGamesResponse;
-import com.nuggeta.ngdl.nobjects.GetGamesStatus;
-import com.nuggeta.ngdl.nobjects.NGame;
+import com.nuggeta.network.Message;
+import com.nuggeta.ngdl.nobjects.CreateGameResponse;
 import com.nuggeta.ngdl.nobjects.NRawMessage;
 import org.zapylaev.game.truetennis.core.domain.Team;
 import org.zapylaev.game.truetennis.core.model.IModel;
@@ -36,82 +35,93 @@ import org.zapylaev.game.truetennis.core.model.IModelListener;
 
 import java.util.*;
 
-public class ClientModelProxy implements IModel {
+public class ServerModelProxy implements IModel {
 
-    private NuggetaPlug mNuggetaPlug;
+    private final IModel mModel;
+    private final NuggetaPlug mNuggetaPlug;
     private String mGameId;
-    private IModelListener mListener;
 
-    public ClientModelProxy(NuggetaPlug nuggetaPlug) {
+    public ServerModelProxy(IModel model, NuggetaPlug nuggetaPlug) {
+        mModel = model;
         mNuggetaPlug = nuggetaPlug;
+
+        mModel.addModelListener(new IModelListener() {
+            @Override
+            public void onModelUpdate(String modelState) {
+                NRawMessage rawMessage = new NRawMessage();
+                rawMessage.setContent(modelState);
+                mNuggetaPlug.sendGameMessage(rawMessage, mGameId);
+            }
+
+            @Override
+            public void goalEvent() {
+
+            }
+
+            @Override
+            public void winEvent() {
+
+            }
+        });
     }
 
     @Override
     public void addModelListener(IModelListener listener) {
-        mListener = listener;
+        mModel.addModelListener(listener);
     }
 
     @Override
     public void update() {
-        List<com.nuggeta.network.Message> messages = mNuggetaPlug.pump();
-        for (com.nuggeta.network.Message message : messages) {
-            if (message instanceof GetGamesResponse) {
-                GetGamesResponse getGamesResponse = (GetGamesResponse) message;
-                if (getGamesResponse.getGetGamesStatus() == GetGamesStatus.SUCCESS) {
-
-                    List<NGame> games = getGamesResponse.getGames();
-
-                    if (games.size() > 0) {
-                        String gameIdToJoin = games.get(0).getId();
-                        joinGame(gameIdToJoin);
-                    }
-                }
+        List<Message> messages = mNuggetaPlug.pump();
+        for (Message message : messages) {
+            if (message instanceof CreateGameResponse) {
+                CreateGameResponse createGameResponse = (CreateGameResponse) message;
+                mGameId = createGameResponse.getGameId();
+                mNuggetaPlug.joinGame(mGameId);
             } else if (message instanceof NRawMessage) {
                 String content = ((NRawMessage)message).getContent();
-                if (mListener != null) {
-                    mListener.onModelUpdate(content);
+                if (content.equals(Messages.UP)) {
+                    mModel.moveUp(Team.RIGHT);
+                } else {
+                    mModel.moveDown(Team.RIGHT);
                 }
             }
         }
+        mModel.update();
     }
 
     @Override
     public void dispose() {
-
+        mModel.dispose();
     }
 
     @Override
     public void joinGame(String gameId) {
-        mNuggetaPlug.joinGame(gameId);
-        mGameId = gameId;
+        mModel.joinGame(gameId);
     }
 
     @Override
     public void moveUp(Team team) {
-        NRawMessage rawMessage = new NRawMessage();
-        rawMessage.setContent(Messages.UP);
-        mNuggetaPlug.sendGameMessage(rawMessage, mGameId);
+        mModel.moveUp(team);
     }
 
     @Override
     public void moveDown(Team team) {
-        NRawMessage rawMessage = new NRawMessage();
-        rawMessage.setContent(Messages.DOWN);
-        mNuggetaPlug.sendGameMessage(rawMessage, mGameId);
+        mModel.moveDown(team);
     }
 
     @Override
     public void startRound() {
-
+        mModel.startRound();
     }
 
     @Override
     public void resetRound() {
-
+        mModel.resetRound();
     }
 
     @Override
     public void debugRender(OrthographicCamera camera) {
-
+        mModel.debugRender(camera);
     }
 }

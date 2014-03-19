@@ -24,7 +24,7 @@
 
 package org.zapylaev.game.truetennis.core.net;
 
-public class Message {
+public class Messages {
     public static final String UP = "up";
     public static final String DOWN = "down";
 }
