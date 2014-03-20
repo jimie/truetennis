@@ -29,10 +29,12 @@ import com.nuggeta.network.Message;
 import java.util.*;
 
 public interface INetCommunicator {
-    void createGame();
+    void connect();
+    void loop();
+    void createGameRequest(AsyncRequest<String> answer);
+    void getGamesRequest(AsyncRequest<List<NetGame>> answer);
     void joinGame(String gameId);
-    void getGames();
-    void sendGameMessage(String message, String gameId);
+    void sendGameMessage(String message);
     List<Message> retrieveLastMessages();
     void dispose();
 }

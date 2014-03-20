@@ -146,11 +146,6 @@ public class PhysicalModel implements IModel {
     }
 
     @Override
-    public void joinGame(String gameId) {
-
-    }
-
-    @Override
     public void moveUp(Team team) {
         if (team == Team.LEFT) {
             mBox2dStickLeft.applyForceY(Box2dStick.MAX_FORCE);

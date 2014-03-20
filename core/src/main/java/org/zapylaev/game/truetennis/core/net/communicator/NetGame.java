@@ -22,18 +22,22 @@
  * SOFTWARE.
  */
 
-package org.zapylaev.game.truetennis.core.model;
+package org.zapylaev.game.truetennis.core.net.communicator;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import org.zapylaev.game.truetennis.core.domain.Team;
+import com.nuggeta.ngdl.nobjects.NGame;
 
-public interface IModel {
-    void addModelListener(IModelListener listener);
-    void update();
-    void dispose();
-    void moveUp(Team team);
-    void moveDown(Team team);
-    void startRound();
-    void resetRound();
-    void debugRender(OrthographicCamera camera);
+public class NetGame {
+    private final NGame mNGame;
+
+    public NetGame(NGame nGame) {
+        mNGame = nGame;
+    }
+
+    public String getName() {
+        return mNGame.getName();
+    }
+
+    public String getId() {
+        return mNGame.getId();
+    }
 }

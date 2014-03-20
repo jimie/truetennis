@@ -31,17 +31,18 @@ import org.zapylaev.game.truetennis.core.model.IModel;
 
 public class Controls {
 
-    private final IModel mModel;
-
-    public Controls(IModel model) {
-        mModel = model;
-    }
+    private IModel mModel;
 
     public void applyControls() {
+        if (mModel == null) return;
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             mModel.moveUp(Team.LEFT);
         } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             mModel.moveDown(Team.LEFT);
         }
+    }
+
+    public void setModel(IModel model) {
+        mModel = model;
     }
 }

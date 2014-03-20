@@ -29,11 +29,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import org.zapylaev.game.truetennis.core.TrueTennisMain;
+import org.zapylaev.game.truetennis.core.net.communicator.NetGame;
 
-public class StartScreen extends MenuScreen {
+import java.util.*;
 
-    public StartScreen(TrueTennisMain game) {
+public class GamesListGame extends MenuScreen {
+    private final List<NetGame> mGames;
+
+    public GamesListGame(TrueTennisMain game, List<NetGame> games) {
         super(game);
+        mGames = games;
     }
 
     @Override
@@ -44,29 +49,18 @@ public class StartScreen extends MenuScreen {
 
         mStage.addActor(table);
 
-        TextButton createServerButton = new TextButton("Create game", mSkin);
-        TextButton joinGameBlueButton = new TextButton("Join game", mSkin);
+        for (NetGame game : mGames) {
+            final TextButton button = new TextButton(game.getId(), mSkin);
+            table.add(button).size(350, 50).uniform().spaceBottom(10);
+            table.row();
 
-        table.add(createServerButton).size(350, 50).uniform().spaceBottom(10);
-        table.row();
-        table.add(joinGameBlueButton).uniform().fill().spaceBottom(10);
-        table.row();
-
-        createServerButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                mGame.createGame();
-            }
-        });
-        joinGameBlueButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                mGame.showGamesList();
-            }
-
-        });
+            button.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event, x, y);
+                    mGame.joinGame(button.getText().toString());
+                }
+            });
+        }
     }
-
 }

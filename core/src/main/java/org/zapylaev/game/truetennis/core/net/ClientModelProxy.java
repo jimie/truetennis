@@ -39,7 +39,6 @@ import java.util.*;
 public class ClientModelProxy implements IModel {
 
     private INetCommunicator mNuggetaPlug;
-    private String mGameId;
     private IModelListener mListener;
 
     public ClientModelProxy(INetCommunicator nuggetaPlug) {
@@ -55,18 +54,7 @@ public class ClientModelProxy implements IModel {
     public void update() {
         List<com.nuggeta.network.Message> messages = mNuggetaPlug.retrieveLastMessages();
         for (com.nuggeta.network.Message message : messages) {
-            if (message instanceof GetGamesResponse) {
-                GetGamesResponse getGamesResponse = (GetGamesResponse) message;
-                if (getGamesResponse.getGetGamesStatus() == GetGamesStatus.SUCCESS) {
-
-                    List<NGame> games = getGamesResponse.getGames();
-
-                    if (games.size() > 0) {
-                        String gameIdToJoin = games.get(0).getId();
-                        joinGame(gameIdToJoin);
-                    }
-                }
-            } else if (message instanceof NRawMessage) {
+            if (message instanceof NRawMessage) {
                 String content = ((NRawMessage)message).getContent();
                 if (mListener != null) {
                     mListener.onModelUpdate(content);
@@ -81,19 +69,13 @@ public class ClientModelProxy implements IModel {
     }
 
     @Override
-    public void joinGame(String gameId) {
-        mNuggetaPlug.joinGame(gameId);
-        mGameId = gameId;
-    }
-
-    @Override
     public void moveUp(Team team) {
-        mNuggetaPlug.sendGameMessage(Messages.UP, mGameId);
+        mNuggetaPlug.sendGameMessage(Messages.UP);
     }
 
     @Override
     public void moveDown(Team team) {
-        mNuggetaPlug.sendGameMessage(Messages.DOWN, mGameId);
+        mNuggetaPlug.sendGameMessage(Messages.DOWN);
     }
 
     @Override

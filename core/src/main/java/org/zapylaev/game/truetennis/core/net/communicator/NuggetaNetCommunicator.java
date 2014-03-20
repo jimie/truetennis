@@ -26,6 +26,11 @@ package org.zapylaev.game.truetennis.core.net.communicator;
 
 import com.nuggeta.NuggetaPlug;
 import com.nuggeta.network.Message;
+import com.nuggeta.ngdl.nobjects.CreateGameResponse;
+import com.nuggeta.ngdl.nobjects.CreateGameStatus;
+import com.nuggeta.ngdl.nobjects.GetGamesResponse;
+import com.nuggeta.ngdl.nobjects.GetGamesStatus;
+import com.nuggeta.ngdl.nobjects.NGame;
 import com.nuggeta.ngdl.nobjects.NRawMessage;
 import com.nuggeta.ngdl.nobjects.NuggetaQuery;
 
@@ -36,6 +41,8 @@ class NuggetaNetCommunicator implements INetCommunicator {
     private final NuggetaPlug mNuggetaPlug;
     private final NuggetaQuery mGetGamesQuery;
     private final NRawMessage mRawMessage;
+    private final Map<Class<?>, AsyncRequest<?>> mAsyncRequests;
+    private String mActiveGameId;
 
     NuggetaNetCommunicator() {
         mNuggetaPlug = new NuggetaPlug(NUGGETA_TOKEN);
@@ -43,28 +50,71 @@ class NuggetaNetCommunicator implements INetCommunicator {
         mGetGamesQuery.setStart(0);
         mGetGamesQuery.setLimit(10);
         mRawMessage = new NRawMessage();
+        mAsyncRequests = new HashMap<Class<?>, AsyncRequest<?>>();
+    }
+
+    @Override
+    public void connect() {
         mNuggetaPlug.start();
     }
 
     @Override
-    public void createGame() {
+    public void loop() {
+        List<Message> messages = mNuggetaPlug.pump();
+        for (Message message : messages) {
+            if (message instanceof GetGamesResponse) {
+                GetGamesResponse getGamesResponse = (GetGamesResponse) message;
+                if (getGamesResponse.getGetGamesStatus() == GetGamesStatus.SUCCESS) {
+                    AsyncRequest<List<NetGame>> request = (AsyncRequest<List<NetGame>>) mAsyncRequests.get(GetGamesResponse.class);
+                    if (request != null) {
+                        List<NGame> games = getGamesResponse.getGames();
+                        List<NetGame> netGames = new ArrayList<NetGame>();
+                        for (NGame nGame : games) {
+                            netGames.add(new NetGame(nGame));
+                        }
+                        request.answer(netGames);
+                        mAsyncRequests.remove(GetGamesResponse.class);
+                    }
+                } else {
+                    throw new RuntimeException("Can't get games. Status: " + getGamesResponse.getGetGamesStatus());
+                }
+            } else if (message instanceof CreateGameResponse) {
+                CreateGameResponse createGameResponse = (CreateGameResponse) message;
+                if (createGameResponse.getCreateGameStatus() == CreateGameStatus.SUCCESS) {
+                    AsyncRequest<String> request = (AsyncRequest<String>) mAsyncRequests.get(CreateGameResponse.class);
+                    mActiveGameId = createGameResponse.getGameId();
+                    request.answer(mActiveGameId);
+                    mAsyncRequests.remove(CreateGameResponse.class);
+                } else {
+                    throw new RuntimeException("Can't create game. Status: " + createGameResponse.getCreateGameStatus());
+                }
+            }
+        }
+    }
+
+    @Override
+    public void createGameRequest(AsyncRequest<String> answer) {
         mNuggetaPlug.createGame();
+        mAsyncRequests.put(CreateGameResponse.class, answer);
     }
 
     @Override
     public void joinGame(String gameId) {
         mNuggetaPlug.joinGame(gameId);
+        mActiveGameId = gameId;
     }
 
     @Override
-    public void getGames() {
+    public void getGamesRequest(AsyncRequest<List<NetGame>> answer) {
         mNuggetaPlug.getGames(mGetGamesQuery);
+        mAsyncRequests.put(GetGamesResponse.class, answer);
     }
 
     @Override
-    public void sendGameMessage(String message, String gameId) {
+    public void sendGameMessage(String message) {
+        if (mActiveGameId == null) throw new RuntimeException("Seems game was not created");
         mRawMessage.setContent(message);
-        mNuggetaPlug.sendGameMessage(mRawMessage, gameId);
+        mNuggetaPlug.sendGameMessage(mRawMessage, mActiveGameId);
     }
 
     @Override
@@ -74,6 +124,9 @@ class NuggetaNetCommunicator implements INetCommunicator {
 
     @Override
     public void dispose() {
+        if (mActiveGameId != null) {
+            mNuggetaPlug.stopGame(mActiveGameId);
+        }
         mNuggetaPlug.stop();
     }
 }

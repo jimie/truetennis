@@ -32,10 +32,15 @@ import org.zapylaev.game.truetennis.core.model.IModel;
 import org.zapylaev.game.truetennis.core.model.PhysicalModel;
 import org.zapylaev.game.truetennis.core.net.ClientModelProxy;
 import org.zapylaev.game.truetennis.core.net.ServerModelProxy;
+import org.zapylaev.game.truetennis.core.net.communicator.AsyncRequest;
 import org.zapylaev.game.truetennis.core.net.communicator.INetCommunicator;
 import org.zapylaev.game.truetennis.core.net.communicator.NetCommunicatorBuilder;
+import org.zapylaev.game.truetennis.core.net.communicator.NetGame;
 import org.zapylaev.game.truetennis.core.screen.GameController;
+import org.zapylaev.game.truetennis.core.screen.menu.GamesListGame;
 import org.zapylaev.game.truetennis.core.screen.menu.StartScreen;
+
+import java.util.*;
 
 public class TrueTennisMain extends Game {
 
@@ -47,25 +52,42 @@ public class TrueTennisMain extends Game {
         Assets.getInstance().init();
         setScreen(new StartScreen(this));
         Gdx.app.setLogLevel(Application.LOG_ERROR);
+        mControls = new Controls();
         mNetCommunicator = NetCommunicatorBuilder.build(NetCommunicatorBuilder.NUGGETA);
+        mNetCommunicator.connect();
     }
 
     public void createGame() {
-        IModel serverModel = new ServerModelProxy(new PhysicalModel(), mNetCommunicator);
-        mControls = new Controls(serverModel);
-        setScreen(new GameController(serverModel));
-        mNetCommunicator.createGame();
+        mNetCommunicator.createGameRequest(new AsyncRequest<String>() {
+            @Override
+            public void answer(String gameId) {
+                mNetCommunicator.joinGame(gameId);
+                IModel serverModelProxy = new ServerModelProxy(new PhysicalModel(), mNetCommunicator);
+                setScreen(new GameController(serverModelProxy));
+                mControls.setModel(serverModelProxy);
+            }
+        });
     }
 
-    public void joinGame() {
-        ClientModelProxy clientModelProxy = new ClientModelProxy(mNetCommunicator);
-        mControls = new Controls(clientModelProxy);
+    public void showGamesList() {
+        mNetCommunicator.getGamesRequest(new AsyncRequest<List<NetGame>>() {
+            @Override
+            public void answer(List<NetGame> games) {
+                setScreen(new GamesListGame(TrueTennisMain.this, games));
+            }
+        });
+    }
+
+    public void joinGame(String gameId) {
+        mNetCommunicator.joinGame(gameId);
+        IModel clientModelProxy = new ClientModelProxy(mNetCommunicator);
+        mControls.setModel(clientModelProxy);
         setScreen(new GameController(clientModelProxy));
-        mNetCommunicator.getGames();
     }
 
     @Override
     public void render() {
+        mNetCommunicator.loop();
         Gdx.gl.glClearColor(0.4f, 0.62f, 0.82f, 1f);
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
         super.render();

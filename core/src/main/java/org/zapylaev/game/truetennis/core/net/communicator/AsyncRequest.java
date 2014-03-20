@@ -22,18 +22,8 @@
  * SOFTWARE.
  */
 
-package org.zapylaev.game.truetennis.core.model;
+package org.zapylaev.game.truetennis.core.net.communicator;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import org.zapylaev.game.truetennis.core.domain.Team;
-
-public interface IModel {
-    void addModelListener(IModelListener listener);
-    void update();
-    void dispose();
-    void moveUp(Team team);
-    void moveDown(Team team);
-    void startRound();
-    void resetRound();
-    void debugRender(OrthographicCamera camera);
+public interface AsyncRequest<T> {
+    void answer(T answer);
 }
