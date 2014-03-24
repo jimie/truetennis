@@ -38,6 +38,9 @@ import org.zapylaev.game.truetennis.core.domain.Player;
 import org.zapylaev.game.truetennis.core.domain.Team;
 
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class PhysicalModel implements IModel {
     private DebugRenderer mDebugRenderer;
@@ -53,6 +56,7 @@ public class PhysicalModel implements IModel {
     private final Player mRightPlayer;
     private final Ball mBall;
     private int mWinScore;
+    private final ScheduledExecutorService mExecutor;
 
     public PhysicalModel() {
         mWorld = new World(new Vector2(0, 0), true);
@@ -80,6 +84,16 @@ public class PhysicalModel implements IModel {
         mField.setBall(mBall);
         mJson = new Json();
         mWinScore = GamePrefs.getInstance().getWinScore();
+
+        mExecutor = Executors.newSingleThreadScheduledExecutor();
+        mExecutor.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                for (IModelListener modelListener : mModelListeners) {
+                    modelListener.onModelUpdate(obtainModelState());
+                }
+            }
+        }, 0, 1000 / 60, TimeUnit.MILLISECONDS);
     }
 
     @Override
@@ -92,10 +106,6 @@ public class PhysicalModel implements IModel {
         mWorld.step(Gdx.graphics.getDeltaTime(), 8, 3);
         checkGoal();
         checkWin();
-
-        for (IModelListener modelListener : mModelListeners) {
-            modelListener.onModelUpdate(obtainModelState());
-        }
     }
 
     private String obtainModelState() {
@@ -143,6 +153,7 @@ public class PhysicalModel implements IModel {
         if (mDebugRenderer != null) {
             mDebugRenderer.dispose();
         }
+        mExecutor.shutdown();
     }
 
     @Override
