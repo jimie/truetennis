@@ -45,14 +45,12 @@ import java.util.*;
 public class TrueTennisMain extends Game {
 
     private INetCommunicator mNetCommunicator;
-    private Controls mControls;
 
     @Override
     public void create() {
         Assets.getInstance().init();
         setScreen(new StartScreen(this));
         Gdx.app.setLogLevel(Application.LOG_ERROR);
-        mControls = new Controls();
         mNetCommunicator = NetCommunicatorBuilder.build(NetCommunicatorBuilder.NUGGETA);
         mNetCommunicator.connect();
     }
@@ -64,7 +62,6 @@ public class TrueTennisMain extends Game {
                 mNetCommunicator.joinGame(gameId);
                 IModel serverModelProxy = new ServerModelProxy(new PhysicalModel(), mNetCommunicator);
                 setScreen(new GameController(serverModelProxy));
-                mControls.setModel(serverModelProxy);
             }
         });
     }
@@ -81,7 +78,6 @@ public class TrueTennisMain extends Game {
     public void joinGame(String gameId) {
         mNetCommunicator.joinGame(gameId);
         IModel clientModelProxy = new ClientModelProxy(mNetCommunicator);
-        mControls.setModel(clientModelProxy);
         setScreen(new GameController(clientModelProxy));
     }
 
@@ -91,10 +87,6 @@ public class TrueTennisMain extends Game {
         Gdx.gl.glClearColor(0.4f, 0.62f, 0.82f, 1f);
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
         super.render();
-
-        if (mControls != null) {
-            mControls.applyControls();
-        }
     }
 
     @Override

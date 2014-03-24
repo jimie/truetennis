@@ -73,9 +73,9 @@ public class ServerModelProxy implements IModel {
             if (message instanceof NRawMessage) {
                 String content = ((NRawMessage)message).getContent();
                 if (content.equals(Messages.UP)) {
-                    mModel.moveUp(Team.RIGHT);
+                    mModel.moveUpStart(Team.RIGHT);
                 } else {
-                    mModel.moveDown(Team.RIGHT);
+                    mModel.moveDownStart(Team.RIGHT);
                 }
             }
         }
@@ -88,13 +88,23 @@ public class ServerModelProxy implements IModel {
     }
 
     @Override
-    public void moveUp(Team team) {
-        mModel.moveUp(team);
+    public void moveUpStart(Team team) {
+        mModel.moveUpStart(team);
     }
 
     @Override
-    public void moveDown(Team team) {
-        mModel.moveDown(team);
+    public void moveUpEnd(Team team) {
+
+    }
+
+    @Override
+    public void moveDownStart(Team team) {
+        mModel.moveDownStart(team);
+    }
+
+    @Override
+    public void moveDownEnd(Team team) {
+
     }
 
     @Override

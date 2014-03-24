@@ -25,38 +25,33 @@
 package org.zapylaev.game.truetennis.core.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.Json;
 import org.zapylaev.game.truetennis.core.Constants;
+import org.zapylaev.game.truetennis.core.input.Controls;
 import org.zapylaev.game.truetennis.core.IRenderer;
 import org.zapylaev.game.truetennis.core.domain.Field;
-import org.zapylaev.game.truetennis.core.domain.Team;
+import org.zapylaev.game.truetennis.core.input.State;
 import org.zapylaev.game.truetennis.core.model.IModel;
 import org.zapylaev.game.truetennis.core.model.IModelListener;
-import org.zapylaev.game.truetennis.core.model.PhysicalModel;
 import org.zapylaev.game.truetennis.core.render.GameRenderer;
 
 /**
  * @author k.zapylaev <zapylaev@gmail.com>
  */
-public class GameController extends InputAdapter implements Screen, IModelListener {
+public class GameController implements Screen, IModelListener {
 
-    public GameController(IModel model) {
-        mModel = model;
-    }
-
-    enum State {
-        IDLE, END_GAME, GAME
-    }
     private IModel mModel;
     private IRenderer mGameRenderer;
     private OrthographicCamera mMainCamera;
     private OrthographicCamera mHUDCamera;
-    private State mState;
     private Json mJson;
+    private Controls mControls;
+
+    public GameController(IModel model) {
+        mModel = model;
+    }
 
     @Override
     public void show() {
@@ -66,34 +61,18 @@ public class GameController extends InputAdapter implements Screen, IModelListen
         mHUDCamera.update();
         mGameRenderer = new GameRenderer(mMainCamera, mHUDCamera);
         mModel.addModelListener(this);
-        Gdx.input.setInputProcessor(this);
-        mState = State.IDLE;
+        mControls = new Controls(mModel, mGameRenderer);
+        mControls.setState(State.IDLE);
+        Gdx.input.setInputProcessor(mControls);
         mJson = new Json();
     }
 
     @Override
     public void render(float delta) {
+        mControls.process();
         mModel.update();
         mGameRenderer.render();
         mModel.debugRender(mMainCamera);
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        if (keycode == Input.Keys.SPACE) {
-            if (mState == State.IDLE) {
-                mModel.startRound();
-                mState = State.GAME;
-                return true;
-            } else if (mState == State.END_GAME) {
-                mGameRenderer.stopWinEffect();
-                mModel.resetRound();
-                mModel.startRound();
-                mState = State.GAME;
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override
@@ -133,12 +112,12 @@ public class GameController extends InputAdapter implements Screen, IModelListen
 
     @Override
     public void goalEvent() {
-        mState = State.IDLE;
+        mControls.setState(State.IDLE);
     }
 
     @Override
     public void winEvent() {
-        mState = State.END_GAME;
+        mControls.setState(State.END_GAME);
         mGameRenderer.playWinEffect();
     }
 }

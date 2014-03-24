@@ -22,27 +22,8 @@
  * SOFTWARE.
  */
 
-package org.zapylaev.game.truetennis.core;
+package org.zapylaev.game.truetennis.core.input;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import org.zapylaev.game.truetennis.core.domain.Team;
-import org.zapylaev.game.truetennis.core.model.IModel;
-
-public class Controls {
-
-    private IModel mModel;
-
-    public void applyControls() {
-        if (mModel == null) return;
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            mModel.moveUp(Team.LEFT);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            mModel.moveDown(Team.LEFT);
-        }
-    }
-
-    public void setModel(IModel model) {
-        mModel = model;
-    }
+public enum State {
+    IDLE, END_GAME, GAME
 }

@@ -31,8 +31,10 @@ public interface IModel {
     void addModelListener(IModelListener listener);
     void update();
     void dispose();
-    void moveUp(Team team);
-    void moveDown(Team team);
+    void moveUpStart(Team team);
+    void moveUpEnd(Team team);
+    void moveDownStart(Team team);
+    void moveDownEnd(Team team);
     void startRound();
     void resetRound();
     void debugRender(OrthographicCamera camera);

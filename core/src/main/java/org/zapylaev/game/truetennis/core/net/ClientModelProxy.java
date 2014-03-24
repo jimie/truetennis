@@ -69,13 +69,23 @@ public class ClientModelProxy implements IModel {
     }
 
     @Override
-    public void moveUp(Team team) {
+    public void moveUpStart(Team team) {
+
+    }
+
+    @Override
+    public void moveUpEnd(Team team) {
         mNuggetaPlug.sendGameMessage(Messages.UP);
     }
 
     @Override
-    public void moveDown(Team team) {
+    public void moveDownStart(Team team) {
         mNuggetaPlug.sendGameMessage(Messages.DOWN);
+    }
+
+    @Override
+    public void moveDownEnd(Team team) {
+
     }
 
     @Override
