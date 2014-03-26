@@ -25,23 +25,21 @@
 package org.zapylaev.game.truetennis.core.net;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.nuggeta.network.Message;
 import com.nuggeta.ngdl.nobjects.NRawMessage;
 import org.zapylaev.game.truetennis.core.domain.Team;
 import org.zapylaev.game.truetennis.core.model.IModel;
 import org.zapylaev.game.truetennis.core.model.IModelListener;
-import org.zapylaev.game.truetennis.core.model.PhysicalModel;
 import org.zapylaev.game.truetennis.core.net.communicator.INetCommunicator;
 
 import java.util.*;
 
 public class ClientModelProxy implements IModel {
 
-    private final PhysicalModel mPhysicalModel;
     private INetCommunicator mNuggetaPlug;
     private IModelListener mListener;
 
     public ClientModelProxy(INetCommunicator nuggetaPlug) {
-        mPhysicalModel = new PhysicalModel();
         mNuggetaPlug = nuggetaPlug;
     }
 
@@ -52,8 +50,8 @@ public class ClientModelProxy implements IModel {
 
     @Override
     public void update() {
-        List<com.nuggeta.network.Message> messages = mNuggetaPlug.retrieveLastMessages();
-        for (com.nuggeta.network.Message message : messages) {
+        List<Message> messages = mNuggetaPlug.retrieveLastMessages();
+        for (Message message : messages) {
             if (message instanceof NRawMessage) {
                 String content = ((NRawMessage)message).getContent();
                 if (mListener != null) {
@@ -65,18 +63,15 @@ public class ClientModelProxy implements IModel {
 
     @Override
     public void dispose() {
-        mPhysicalModel.dispose();
     }
 
     @Override
     public void sendMoveUp(Team team) {
-        mPhysicalModel.sendMoveUp(team);
         mNuggetaPlug.sendGameMessage(Messages.UP);
     }
 
     @Override
     public void sendMoveDown(Team team) {
-        mPhysicalModel.sendMoveDown(team);
         mNuggetaPlug.sendGameMessage(Messages.DOWN);
     }
 
