@@ -45,6 +45,7 @@ import java.util.*;
 public class TrueTennisMain extends Game {
 
     private INetCommunicator mNetCommunicator;
+    private IModel mModel;
 
     @Override
     public void create() {
@@ -60,8 +61,8 @@ public class TrueTennisMain extends Game {
             @Override
             public void answer(String gameId) {
                 mNetCommunicator.joinGame(gameId);
-                IModel serverModelProxy = new ServerModelProxy(new PhysicalModel(), mNetCommunicator);
-                setScreen(new GameController(serverModelProxy));
+                mModel = new ServerModelProxy(mNetCommunicator);
+                setScreen(new GameController(mModel));
             }
         });
     }
@@ -77,8 +78,8 @@ public class TrueTennisMain extends Game {
 
     public void joinGame(String gameId) {
         mNetCommunicator.joinGame(gameId);
-        IModel clientModelProxy = new ClientModelProxy(mNetCommunicator);
-        setScreen(new GameController(clientModelProxy));
+        mModel = new ClientModelProxy(mNetCommunicator);
+        setScreen(new GameController(mModel));
     }
 
     @Override
@@ -93,5 +94,8 @@ public class TrueTennisMain extends Game {
     public void dispose() {
         super.dispose();
         mNetCommunicator.dispose();
+        if (mModel != null) {
+            mModel.dispose();
+        }
     }
 }

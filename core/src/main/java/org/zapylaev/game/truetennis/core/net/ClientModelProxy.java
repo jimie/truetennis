@@ -32,16 +32,19 @@ import com.nuggeta.ngdl.nobjects.NRawMessage;
 import org.zapylaev.game.truetennis.core.domain.Team;
 import org.zapylaev.game.truetennis.core.model.IModel;
 import org.zapylaev.game.truetennis.core.model.IModelListener;
+import org.zapylaev.game.truetennis.core.model.PhysicalModel;
 import org.zapylaev.game.truetennis.core.net.communicator.INetCommunicator;
 
 import java.util.*;
 
 public class ClientModelProxy implements IModel {
 
+    private final PhysicalModel mPhysicalModel;
     private INetCommunicator mNuggetaPlug;
     private IModelListener mListener;
 
     public ClientModelProxy(INetCommunicator nuggetaPlug) {
+        mPhysicalModel = new PhysicalModel();
         mNuggetaPlug = nuggetaPlug;
     }
 
@@ -65,21 +68,23 @@ public class ClientModelProxy implements IModel {
 
     @Override
     public void dispose() {
-
+        mPhysicalModel.dispose();
     }
 
     @Override
     public void moveUpStart(Team team) {
-
-    }
-
-    @Override
-    public void moveUpEnd(Team team) {
+        mPhysicalModel.moveUpStart(team);
         mNuggetaPlug.sendGameMessage(Messages.UP);
     }
 
     @Override
+    public void moveUpEnd(Team team) {
+
+    }
+
+    @Override
     public void moveDownStart(Team team) {
+        mPhysicalModel.moveDownStart(team);
         mNuggetaPlug.sendGameMessage(Messages.DOWN);
     }
 

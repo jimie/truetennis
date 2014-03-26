@@ -43,6 +43,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class PhysicalModel implements IModel {
+    public static final int MODEL_UPDATE_FPS = 60;
     private DebugRenderer mDebugRenderer;
     private final World mWorld;
     private final Box2dBall mBox2dBall;
@@ -93,7 +94,7 @@ public class PhysicalModel implements IModel {
                     modelListener.onModelUpdate(obtainModelState());
                 }
             }
-        }, 0, 1000 / 60, TimeUnit.MILLISECONDS);
+        }, 0, 1000 / MODEL_UPDATE_FPS, TimeUnit.MILLISECONDS);
     }
 
     @Override

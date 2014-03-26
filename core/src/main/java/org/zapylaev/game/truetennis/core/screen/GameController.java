@@ -77,7 +77,7 @@ public class GameController implements Screen, IModelListener {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override
@@ -102,7 +102,6 @@ public class GameController implements Screen, IModelListener {
     @Override
     public void dispose() {
         mGameRenderer.dispose();
-        mModel.dispose();
     }
 
     @Override

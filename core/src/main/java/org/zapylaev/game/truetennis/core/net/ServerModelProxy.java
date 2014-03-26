@@ -30,23 +30,41 @@ import com.nuggeta.ngdl.nobjects.NRawMessage;
 import org.zapylaev.game.truetennis.core.domain.Team;
 import org.zapylaev.game.truetennis.core.model.IModel;
 import org.zapylaev.game.truetennis.core.model.IModelListener;
+import org.zapylaev.game.truetennis.core.model.PhysicalModel;
 import org.zapylaev.game.truetennis.core.net.communicator.INetCommunicator;
 
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class ServerModelProxy implements IModel {
 
+    public static final int SERVER_SEND_FPS = 10;
     private final IModel mModel;
     private final INetCommunicator mNuggetaPlug;
+    private final ScheduledExecutorService mExecutor;
+    private volatile boolean mReady;
 
-    public ServerModelProxy(IModel model, INetCommunicator nuggetaPlug) {
-        mModel = model;
+    public ServerModelProxy(INetCommunicator nuggetaPlug) {
+        mModel = new PhysicalModel();
         mNuggetaPlug = nuggetaPlug;
+
+        mExecutor = Executors.newSingleThreadScheduledExecutor();
+        mExecutor.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                mReady = true;
+            }
+        }, 0, 1000 / SERVER_SEND_FPS, TimeUnit.MILLISECONDS);
 
         mModel.addModelListener(new IModelListener() {
             @Override
             public void onModelUpdate(String modelState) {
-                mNuggetaPlug.sendGameMessage(modelState);
+                if (mReady) {
+                    mNuggetaPlug.sendGameMessage(modelState);
+                    mReady = false;
+                }
             }
 
             @Override
@@ -84,6 +102,7 @@ public class ServerModelProxy implements IModel {
 
     @Override
     public void dispose() {
+        mExecutor.shutdown();
         mModel.dispose();
     }
 
