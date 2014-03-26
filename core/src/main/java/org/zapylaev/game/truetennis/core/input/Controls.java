@@ -44,9 +44,9 @@ public class Controls extends InputAdapter {
 
     public void process() {
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            mModel.moveUpStart(Team.LEFT);
+            mModel.sendMoveUp(Team.LEFT);
         } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            mModel.moveDownStart(Team.LEFT);
+            mModel.sendMoveDown(Team.LEFT);
         }
     }
 
@@ -54,13 +54,13 @@ public class Controls extends InputAdapter {
     public boolean keyUp(int keycode) {
         if (keycode == Input.Keys.SPACE) {
             if (mState == State.IDLE) {
-                mModel.startRound();
+                mModel.sendStartRound();
                 mState = State.GAME;
                 return true;
             } else if (mState == State.END_GAME) {
                 mGameRenderer.stopWinEffect();
-                mModel.resetRound();
-                mModel.startRound();
+                mModel.sendResetRound();
+                mModel.sendStartRound();
                 mState = State.GAME;
                 return true;
             }

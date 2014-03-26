@@ -24,10 +24,12 @@
 
 package org.zapylaev.game.truetennis.core.screen.menu;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import org.zapylaev.game.truetennis.core.Debug;
 import org.zapylaev.game.truetennis.core.TrueTennisMain;
 
 public class StartScreen extends MenuScreen {
@@ -57,6 +59,9 @@ public class StartScreen extends MenuScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 mGame.createGame();
+                if (Debug.DEBUG) {
+                    Gdx.graphics.setTitle("Server");
+                }
             }
         });
         joinGameBlueButton.addListener(new ClickListener() {
@@ -64,6 +69,9 @@ public class StartScreen extends MenuScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 mGame.showGamesList();
+                if (Debug.DEBUG) {
+                    Gdx.graphics.setTitle("Client");
+                }
             }
 
         });

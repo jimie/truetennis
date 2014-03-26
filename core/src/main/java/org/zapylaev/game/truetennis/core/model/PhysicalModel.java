@@ -158,7 +158,7 @@ public class PhysicalModel implements IModel {
     }
 
     @Override
-    public void moveUpStart(Team team) {
+    public void sendMoveUp(Team team) {
         if (team == Team.LEFT) {
             mBox2dStickLeft.applyForceY(Box2dStick.MAX_FORCE);
         } else {
@@ -167,12 +167,7 @@ public class PhysicalModel implements IModel {
     }
 
     @Override
-    public void moveUpEnd(Team team) {
-
-    }
-
-    @Override
-    public void moveDownStart(Team team) {
+    public void sendMoveDown(Team team) {
         if (team == Team.LEFT) {
             mBox2dStickLeft.applyForceY(-Box2dStick.MAX_FORCE);
         } else {
@@ -181,17 +176,12 @@ public class PhysicalModel implements IModel {
     }
 
     @Override
-    public void moveDownEnd(Team team) {
-
-    }
-
-    @Override
-    public void startRound() {
+    public void sendStartRound() {
         mBox2dBall.applyImpulse(0.7f, 0);
     }
 
     @Override
-    public void resetRound() {
+    public void sendResetRound() {
         mLeftPlayer.setPosition(new Vector2(0, 0));
         mRightPlayer.setPosition(new Vector2(0, 0));
         mField.setLeftPlayerScore(0);

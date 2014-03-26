@@ -25,9 +25,6 @@
 package org.zapylaev.game.truetennis.core.net;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.nuggeta.ngdl.nobjects.GetGamesResponse;
-import com.nuggeta.ngdl.nobjects.GetGamesStatus;
-import com.nuggeta.ngdl.nobjects.NGame;
 import com.nuggeta.ngdl.nobjects.NRawMessage;
 import org.zapylaev.game.truetennis.core.domain.Team;
 import org.zapylaev.game.truetennis.core.model.IModel;
@@ -72,34 +69,24 @@ public class ClientModelProxy implements IModel {
     }
 
     @Override
-    public void moveUpStart(Team team) {
-        mPhysicalModel.moveUpStart(team);
+    public void sendMoveUp(Team team) {
+        mPhysicalModel.sendMoveUp(team);
         mNuggetaPlug.sendGameMessage(Messages.UP);
     }
 
     @Override
-    public void moveUpEnd(Team team) {
-
-    }
-
-    @Override
-    public void moveDownStart(Team team) {
-        mPhysicalModel.moveDownStart(team);
+    public void sendMoveDown(Team team) {
+        mPhysicalModel.sendMoveDown(team);
         mNuggetaPlug.sendGameMessage(Messages.DOWN);
     }
 
     @Override
-    public void moveDownEnd(Team team) {
+    public void sendStartRound() {
 
     }
 
     @Override
-    public void startRound() {
-
-    }
-
-    @Override
-    public void resetRound() {
+    public void sendResetRound() {
 
     }
 
