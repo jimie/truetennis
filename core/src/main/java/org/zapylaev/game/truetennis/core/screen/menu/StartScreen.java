@@ -24,24 +24,28 @@
 
 package org.zapylaev.game.truetennis.core.screen.menu;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import org.zapylaev.game.truetennis.core.Debug;
+import org.zapylaev.game.truetennis.core.Assets;
 import org.zapylaev.game.truetennis.core.TrueTennisMain;
 
 public class StartScreen extends MenuScreen {
 
+    private final Image mBg;
+
     public StartScreen(TrueTennisMain game) {
         super(game);
+        mBg = new Image(Assets.getInstance().splash);
     }
 
     @Override
     public void show() {
         super.show();
         Table table = new Table(mSkin);
+        table.setBackground(mBg.getDrawable());
         table.setFillParent(true);
 
         mStage.addActor(table);
@@ -49,7 +53,7 @@ public class StartScreen extends MenuScreen {
         TextButton createServerButton = new TextButton("Start", mSkin);
         TextButton joinGameBlueButton = new TextButton("Options", mSkin);
 
-        table.add(createServerButton).size(350, 50).uniform().spaceBottom(10);
+        table.add(createServerButton).size(350, 65).uniform().spaceBottom(10).padTop(150);
         table.row();
         table.add(joinGameBlueButton).uniform().fill().spaceBottom(10);
         table.row();

@@ -46,13 +46,16 @@ public class Assets implements Disposable {
 
     public Texture player;
     public Texture ball;
+    public Texture splash;
     public BitmapFont fontDroidSans17;
 
     public void init() {
         player = new Texture(Gdx.files.internal("img/player.png"));
         ball = new Texture(Gdx.files.internal("img/ball.png"));
+        splash = new Texture(Gdx.files.internal("img/splash.png"));
         player.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         ball.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        splash.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
         fontDroidSans17 = new BitmapFont(Gdx.files.internal("fonts/DroidSans17.fnt"));
         fontDroidSans17.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
@@ -62,6 +65,7 @@ public class Assets implements Disposable {
     public void dispose() {
         player.dispose();
         ball.dispose();
+        splash.dispose();
         fontDroidSans17.dispose();
     }
 }
