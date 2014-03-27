@@ -44,7 +44,6 @@ import java.util.*;
 
 public class TrueTennisMain extends Game {
 
-    private INetCommunicator mNetCommunicator;
     private IModel mModel;
 
     @Override
@@ -52,39 +51,15 @@ public class TrueTennisMain extends Game {
         Assets.getInstance().init();
         setScreen(new StartScreen(this));
         Gdx.app.setLogLevel(Application.LOG_ERROR);
-        mNetCommunicator = NetCommunicatorBuilder.build(NetCommunicatorBuilder.NUGGETA);
-        mNetCommunicator.connect();
     }
 
     public void createGame() {
-        mNetCommunicator.createGameRequest(new AsyncRequest<String>() {
-            @Override
-            public void answer(String gameId) {
-                mNetCommunicator.joinGame(gameId);
-                mModel = new ServerModelProxy(mNetCommunicator);
-                setScreen(new GameController(mModel));
-            }
-        });
-    }
-
-    public void showGamesList() {
-        mNetCommunicator.getGamesRequest(new AsyncRequest<List<NetGame>>() {
-            @Override
-            public void answer(List<NetGame> games) {
-                setScreen(new GamesListGame(TrueTennisMain.this, games));
-            }
-        });
-    }
-
-    public void joinGame(String gameId) {
-        mNetCommunicator.joinGame(gameId);
-        mModel = new ClientModelProxy(mNetCommunicator);
+        mModel = new PhysicalModel();
         setScreen(new GameController(mModel));
     }
 
     @Override
     public void render() {
-        mNetCommunicator.loop();
         Gdx.gl.glClearColor(0.4f, 0.62f, 0.82f, 1f);
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
         super.render();
@@ -93,9 +68,12 @@ public class TrueTennisMain extends Game {
     @Override
     public void dispose() {
         super.dispose();
-        mNetCommunicator.dispose();
         if (mModel != null) {
             mModel.dispose();
         }
+    }
+
+    public void showOptions() {
+
     }
 }

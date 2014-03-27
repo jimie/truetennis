@@ -46,8 +46,8 @@ public class StartScreen extends MenuScreen {
 
         mStage.addActor(table);
 
-        TextButton createServerButton = new TextButton("Create game", mSkin);
-        TextButton joinGameBlueButton = new TextButton("Join game", mSkin);
+        TextButton createServerButton = new TextButton("Start", mSkin);
+        TextButton joinGameBlueButton = new TextButton("Options", mSkin);
 
         table.add(createServerButton).size(350, 50).uniform().spaceBottom(10);
         table.row();
@@ -59,19 +59,13 @@ public class StartScreen extends MenuScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 mGame.createGame();
-                if (Debug.DEBUG) {
-                    Gdx.graphics.setTitle("Server");
-                }
             }
         });
         joinGameBlueButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                mGame.showGamesList();
-                if (Debug.DEBUG) {
-                    Gdx.graphics.setTitle("Client");
-                }
+                mGame.showOptions();
             }
 
         });

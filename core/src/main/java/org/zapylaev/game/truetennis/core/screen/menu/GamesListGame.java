@@ -58,7 +58,6 @@ public class GamesListGame extends MenuScreen {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     super.clicked(event, x, y);
-                    mGame.joinGame(button.getText().toString());
                 }
             });
         }

@@ -43,10 +43,15 @@ public class Controls extends InputAdapter {
     }
 
     public void process() {
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             mModel.sendMoveUp(Team.LEFT);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+        } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
             mModel.sendMoveDown(Team.LEFT);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            mModel.sendMoveUp(Team.RIGHT);
+        } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            mModel.sendMoveDown(Team.RIGHT);
         }
     }
 
