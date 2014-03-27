@@ -31,6 +31,7 @@ import org.zapylaev.game.truetennis.core.domain.Ball;
 import org.zapylaev.game.truetennis.core.domain.Field;
 import org.zapylaev.game.truetennis.core.domain.Player;
 import org.zapylaev.game.truetennis.core.domain.Team;
+import org.zapylaev.game.truetennis.core.render.effects.BallEffect;
 import org.zapylaev.game.truetennis.core.render.effects.IEffect;
 import org.zapylaev.game.truetennis.core.render.effects.WinEffect;
 import org.zapylaev.game.truetennis.core.render.textures.BallTexture;
@@ -49,6 +50,7 @@ public class GameRenderer implements IRenderer {
     private final ITexture<Player> mPlayerTexture;
     private final ITexture<Ball> mBallTexture;
     private final IEffect<Team> mWinEffect;
+    private final IEffect<Ball> mBallEffect;
 
     public GameRenderer(OrthographicCamera camera, OrthographicCamera hudCamera) {
         mCamera = camera;
@@ -57,11 +59,15 @@ public class GameRenderer implements IRenderer {
         mBallTexture = new BallTexture();
         mHUD = new HUD(hudCamera);
         mWinEffect = new WinEffect(hudCamera);
+        mBallEffect = new BallEffect(camera);
+        mBallEffect.play();
     }
 
     @Override
     public void render() {
         if (mField == null) return;
+
+        mBallEffect.draw(mMainBatch, mField.getBall());
         mMainBatch.setProjectionMatrix(mCamera.combined);
         mMainBatch.begin();
         mPlayerTexture.draw(mMainBatch, mField.getLeftPlayer());
@@ -91,6 +97,7 @@ public class GameRenderer implements IRenderer {
 
     @Override
     public void dispose() {
+        mBallEffect.stop();
         mMainBatch.dispose();
     }
 }
