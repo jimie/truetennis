@@ -37,11 +37,13 @@ import org.zapylaev.game.truetennis.core.Constants;
 class Box2dStick extends Box2dRect {
     public static final float WIDTH = 0.35f;
     public static final float HEIGHT = 2.8f;
+    public static final float SCREEN_OFFSET = 0.4f;
     public static final float DENSITY = 0.3f;
     public static final float FRICTION = 1f;
     public static final float RESTITUTION = 1f;
     public static final float LINEAR_DAMPING = 2f;
     public static final float MAX_FORCE = 6f;
+    public static final float PRISMATIC_JOINT_OFFSET = 0.05f;
 
     private final World mWorld;
     private PrismaticJoint mPrismaticJoint;
@@ -60,10 +62,10 @@ class Box2dStick extends Box2dRect {
     void setPrismaticJointEnabled(boolean enabled) {
         if (enabled) {
             PrismaticJointDef prismaticJointDef = new PrismaticJointDef();
-            prismaticJointDef.initialize(mWorld.createBody(new BodyDef()), mBody, new Vector2(0, 0), new Vector2(0 , 1));
+            prismaticJointDef.initialize(mWorld.createBody(new BodyDef()), mBody, new Vector2(0, 0), new Vector2(0, 1));
             prismaticJointDef.enableLimit = true;
-            prismaticJointDef.upperTranslation = Constants.SCREEN_HEIGHT / 2 - Box2dStick.HEIGHT / 2;
-            prismaticJointDef.lowerTranslation = -Constants.SCREEN_HEIGHT / 2 + Box2dStick.HEIGHT / 2;
+            prismaticJointDef.upperTranslation = Constants.SCREEN_HEIGHT / 2 - Box2dStick.HEIGHT / 2 - PRISMATIC_JOINT_OFFSET;
+            prismaticJointDef.lowerTranslation = -Constants.SCREEN_HEIGHT / 2 + Box2dStick.HEIGHT / 2 + PRISMATIC_JOINT_OFFSET;
 
             mPrismaticJoint = (PrismaticJoint) mWorld.createJoint(prismaticJointDef);
         } else {

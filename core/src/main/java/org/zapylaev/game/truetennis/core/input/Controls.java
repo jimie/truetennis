@@ -27,6 +27,8 @@ package org.zapylaev.game.truetennis.core.input;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector3;
 import org.zapylaev.game.truetennis.core.IRenderer;
 import org.zapylaev.game.truetennis.core.domain.Team;
 import org.zapylaev.game.truetennis.core.model.IModel;
@@ -36,10 +38,12 @@ public class Controls extends InputAdapter {
     private final IModel mModel;
     private final IRenderer mGameRenderer;
     private State mState;
+    private OrthographicCamera mCamera;
 
-    public Controls(IModel model, IRenderer gameRenderer) {
+    public Controls(IModel model, IRenderer gameRenderer, OrthographicCamera camera) {
         mModel = model;
         mGameRenderer = gameRenderer;
+        mCamera = camera;
     }
 
     public void process() {
@@ -53,6 +57,30 @@ public class Controls extends InputAdapter {
         } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             mModel.sendMoveDown(Team.RIGHT);
         }
+    }
+
+    @Override
+    public boolean touchDown(final int screenX, final int screenY, final int pointer, int button) {
+        final Vector3 vec = new Vector3(screenX, screenY, 0);
+        mCamera.unproject(vec);
+        mModel.sendTouchDown(vec.x, vec.y, pointer);
+        return super.touchDown(screenX, screenY, pointer, button);
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        final Vector3 vec = new Vector3(screenX, screenY, 0);
+        mCamera.unproject(vec);
+        mModel.sendTouchDragged(vec.x, vec.y, pointer);
+        return super.touchDragged(screenX, screenY, pointer);
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        final Vector3 vec = new Vector3(screenX, screenY, 0);
+        mCamera.unproject(vec);
+        mModel.sendTouchUp(vec.x, vec.y, pointer);
+        return super.touchUp(screenX, screenY, pointer, button);
     }
 
     @Override

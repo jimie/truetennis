@@ -38,6 +38,7 @@ import org.zapylaev.game.truetennis.core.net.communicator.NetCommunicatorBuilder
 import org.zapylaev.game.truetennis.core.net.communicator.NetGame;
 import org.zapylaev.game.truetennis.core.screen.GameController;
 import org.zapylaev.game.truetennis.core.screen.menu.GamesListGame;
+import org.zapylaev.game.truetennis.core.screen.menu.OptionsMenu;
 import org.zapylaev.game.truetennis.core.screen.menu.StartScreen;
 
 import java.util.*;
@@ -74,6 +75,6 @@ public class TrueTennisMain extends Game {
     }
 
     public void showOptions() {
-
+        setScreen(new OptionsMenu(this));
     }
 }

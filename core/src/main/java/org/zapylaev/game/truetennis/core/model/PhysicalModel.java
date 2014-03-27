@@ -58,12 +58,15 @@ public class PhysicalModel implements IModel {
     private final Ball mBall;
     private int mWinScore;
     private final ScheduledExecutorService mExecutor;
+    private final ITouchControls mTouchControls;
 
     public PhysicalModel() {
         mWorld = new World(new Vector2(0, 0), true);
         Box2dWalls.create(mWorld);
-        mBox2dStickLeft = new Box2dStick(mWorld, -Constants.SCREEN_WIDTH / 2, 0 - Box2dStick.HEIGHT / 2);
-        mBox2dStickRight = new Box2dStick(mWorld, Constants.SCREEN_WIDTH / 2 - Box2dStick.WIDTH, 0 - Box2dStick.HEIGHT / 2);
+        mBox2dStickLeft = new Box2dStick(mWorld,
+                -Constants.SCREEN_WIDTH / 2 + Box2dStick.SCREEN_OFFSET, 0 - Box2dStick.HEIGHT / 2);
+        mBox2dStickRight = new Box2dStick(mWorld,
+                Constants.SCREEN_WIDTH / 2 - Box2dStick.WIDTH - Box2dStick.SCREEN_OFFSET, 0 - Box2dStick.HEIGHT / 2);
 
         mBox2dStickLeft.setPrismaticJointEnabled(true);
         mBox2dStickRight.setPrismaticJointEnabled(true);
@@ -95,6 +98,7 @@ public class PhysicalModel implements IModel {
                 }
             }
         }, 0, 1000 / MODEL_UPDATE_FPS, TimeUnit.MILLISECONDS);
+        mTouchControls = new JointControls(mWorld);
     }
 
     @Override
@@ -119,10 +123,11 @@ public class PhysicalModel implements IModel {
     private void checkGoal() {
         float ballX = mBox2dBall.getPosition().x;
         boolean goal = false;
-        if (ballX > Constants.SCREEN_WIDTH / 2) {
+        final int extraLength = 2;
+        if (ballX > Constants.SCREEN_WIDTH / 2 + extraLength) {
             goal = true;
             mField.setLeftPlayerScore(mField.getLeftPlayerScore() + 1);
-        } else if (ballX < -Constants.SCREEN_WIDTH / 2) {
+        } else if (ballX < -Constants.SCREEN_WIDTH / 2 - extraLength) {
             goal = true;
             mField.setRightPlayerScore(mField.getRightPlayerScore() + 1);
         }
@@ -193,5 +198,20 @@ public class PhysicalModel implements IModel {
         if (mDebugRenderer != null) {
             mDebugRenderer.render(mWorld, camera);
         }
+    }
+
+    @Override
+    public void sendTouchDown(float x, float y, int pointer) {
+        mTouchControls.sendTouchDown(x, y, pointer);
+    }
+
+    @Override
+    public void sendTouchDragged(float x, float y, int pointer) {
+        mTouchControls.sendTouchDragged(x, y, pointer);
+    }
+
+    @Override
+    public void sendTouchUp(float x, float y, int pointer) {
+        mTouchControls.sendTouchUp(x, y, pointer);
     }
 }

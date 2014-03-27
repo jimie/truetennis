@@ -27,7 +27,7 @@ package org.zapylaev.game.truetennis.core.model;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import org.zapylaev.game.truetennis.core.domain.Team;
 
-public interface IModel {
+public interface IModel extends ITouchControls {
     void addModelListener(IModelListener listener);
     void update();
     void dispose();

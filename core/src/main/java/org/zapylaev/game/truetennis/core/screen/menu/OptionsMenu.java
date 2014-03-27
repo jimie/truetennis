@@ -22,15 +22,22 @@
  * SOFTWARE.
  */
 
-package org.zapylaev.game.truetennis.core;
+package org.zapylaev.game.truetennis.core.screen.menu;
 
-/**
- * @author k.zapylaev <zapylaev@gmail.com>
- */
-public class Constants {
-    public static final float SCREEN_WIDTH = 16;
-    public static final float SCREEN_HEIGHT = 10;
-    public static final float HUD_SCREEN_WIDTH = 960;
-    public static final float HUD_SCREEN_HEIGHT = 600;
-    public static final int MAX_MOUSE_JOINT_FORCE = 18;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import org.zapylaev.game.truetennis.core.TrueTennisMain;
+
+public class OptionsMenu extends MenuScreen {
+    public OptionsMenu(TrueTennisMain game) {
+        super(game);
+    }
+
+    @Override
+    public void show() {
+        super.show();
+        Table table = new Table(mSkin);
+        table.setFillParent(true);
+
+        mStage.addActor(table);
+    }
 }

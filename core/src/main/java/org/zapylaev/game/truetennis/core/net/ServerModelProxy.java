@@ -130,4 +130,19 @@ public class ServerModelProxy implements IModel {
     public void debugRender(OrthographicCamera camera) {
         mModel.debugRender(camera);
     }
+
+    @Override
+    public void sendTouchDown(float x, float y, int pointer) {
+
+    }
+
+    @Override
+    public void sendTouchDragged(float x, float y, int pointer) {
+
+    }
+
+    @Override
+    public void sendTouchUp(float x, float y, int pointer) {
+
+    }
 }

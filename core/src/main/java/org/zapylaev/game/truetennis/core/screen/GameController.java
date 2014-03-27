@@ -29,9 +29,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.Json;
 import org.zapylaev.game.truetennis.core.Constants;
-import org.zapylaev.game.truetennis.core.input.Controls;
 import org.zapylaev.game.truetennis.core.IRenderer;
 import org.zapylaev.game.truetennis.core.domain.Field;
+import org.zapylaev.game.truetennis.core.input.Controls;
 import org.zapylaev.game.truetennis.core.input.State;
 import org.zapylaev.game.truetennis.core.model.IModel;
 import org.zapylaev.game.truetennis.core.model.IModelListener;
@@ -51,6 +51,7 @@ public class GameController implements Screen, IModelListener {
 
     public GameController(IModel model) {
         mModel = model;
+        mModel.addModelListener(this);
     }
 
     @Override
@@ -60,8 +61,7 @@ public class GameController implements Screen, IModelListener {
         mHUDCamera = new OrthographicCamera(Constants.HUD_SCREEN_WIDTH, Constants.HUD_SCREEN_HEIGHT);
         mHUDCamera.update();
         mGameRenderer = new GameRenderer(mMainCamera, mHUDCamera);
-        mModel.addModelListener(this);
-        mControls = new Controls(mModel, mGameRenderer);
+        mControls = new Controls(mModel, mGameRenderer, mMainCamera);
         mControls.setState(State.IDLE);
         Gdx.input.setInputProcessor(mControls);
         mJson = new Json();
