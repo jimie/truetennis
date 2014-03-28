@@ -31,7 +31,8 @@ import org.zapylaev.game.truetennis.core.domain.Ball;
 import org.zapylaev.game.truetennis.core.domain.Field;
 import org.zapylaev.game.truetennis.core.domain.Player;
 import org.zapylaev.game.truetennis.core.domain.Team;
-import org.zapylaev.game.truetennis.core.render.effects.BallEffect;
+import org.zapylaev.game.truetennis.core.render.effects.BallLightEffect;
+import org.zapylaev.game.truetennis.core.render.effects.BallTailEffect;
 import org.zapylaev.game.truetennis.core.render.effects.IEffect;
 import org.zapylaev.game.truetennis.core.render.effects.WinEffect;
 import org.zapylaev.game.truetennis.core.render.textures.BallTexture;
@@ -45,12 +46,13 @@ public class GameRenderer implements IRenderer {
     private final OrthographicCamera mCamera;
     private final SpriteBatch mMainBatch;
 
-    private final HUD mHUD;
     private Field mField;
+    private final HUD mHUD;
     private final ITexture<Player> mPlayerTexture;
     private final ITexture<Ball> mBallTexture;
     private final IEffect<Team> mWinEffect;
     private final IEffect<Ball> mBallEffect;
+    private final IEffect<Ball> mBallLightEffect;
 
     public GameRenderer(OrthographicCamera camera, OrthographicCamera hudCamera) {
         mCamera = camera;
@@ -59,14 +61,17 @@ public class GameRenderer implements IRenderer {
         mBallTexture = new BallTexture();
         mHUD = new HUD(hudCamera);
         mWinEffect = new WinEffect(hudCamera);
-        mBallEffect = new BallEffect(camera);
+        mBallEffect = new BallTailEffect(camera);
         mBallEffect.play();
+        mBallLightEffect = new BallLightEffect(camera);
+        mBallLightEffect.play();
     }
 
     @Override
     public void render() {
         if (mField == null) return;
 
+        mBallLightEffect.draw(mMainBatch, mField.getBall());
         mBallEffect.draw(mMainBatch, mField.getBall());
         mMainBatch.setProjectionMatrix(mCamera.combined);
         mMainBatch.begin();
@@ -97,7 +102,9 @@ public class GameRenderer implements IRenderer {
 
     @Override
     public void dispose() {
-        mBallEffect.stop();
+        mWinEffect.dispose();
+        mBallEffect.dispose();
+        mBallLightEffect.dispose();
         mMainBatch.dispose();
     }
 }

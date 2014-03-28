@@ -31,14 +31,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import org.zapylaev.game.truetennis.core.domain.Ball;
 
-public class BallEffect implements IEffect<Ball> {
+public class BallTailEffect implements IEffect<Ball> {
 
     private final ParticleEffect mEffect;
     private OrthographicCamera mCamera;
     private Vector3 mTempVec;
     private boolean mPlayed;
 
-    public BallEffect(OrthographicCamera camera) {
+    public BallTailEffect(OrthographicCamera camera) {
         mCamera = camera;
         mEffect = new ParticleEffect();
         mEffect.load(Gdx.files.internal("effects/ball.eff"), Gdx.files.internal("effects/"));
@@ -69,6 +69,10 @@ public class BallEffect implements IEffect<Ball> {
     @Override
     public void stop() {
         mPlayed = false;
+    }
+
+    @Override
+    public void dispose() {
         mEffect.dispose();
     }
 }

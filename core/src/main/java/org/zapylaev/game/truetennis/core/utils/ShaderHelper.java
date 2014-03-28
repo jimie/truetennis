@@ -22,13 +22,27 @@
  * SOFTWARE.
  */
 
-package org.zapylaev.game.truetennis.core.render.effects;
+package org.zapylaev.game.truetennis.core.utils;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.utils.GdxRuntimeException;
+import org.zapylaev.game.truetennis.core.Debug;
 
-public interface IEffect<T> extends Disposable {
-    void draw(SpriteBatch batch, T domainObj);
-    void play();
-    void stop();
+public class ShaderHelper {
+    public static ShaderProgram loadShader(String name) {
+        FileHandle vert = Gdx.files.internal("shader/" + name + ".vert");
+        FileHandle frag = Gdx.files.internal("shader/" + name + ".frag");
+        ShaderProgram shader = new ShaderProgram(vert, frag);
+        if (!shader.isCompiled()) {
+            throw new GdxRuntimeException("Could not compile shader: " + shader.getLog());
+        }
+        if (shader.getLog().length() != 0) {
+            if (Debug.DEBUG) {
+                Gdx.app.log("ShaderHelper", shader.getLog());
+            }
+        }
+        return shader;
+    }
 }

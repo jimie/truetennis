@@ -30,18 +30,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import org.zapylaev.game.truetennis.core.model.IModel;
 import org.zapylaev.game.truetennis.core.model.PhysicalModel;
-import org.zapylaev.game.truetennis.core.net.ClientModelProxy;
-import org.zapylaev.game.truetennis.core.net.ServerModelProxy;
-import org.zapylaev.game.truetennis.core.net.communicator.AsyncRequest;
-import org.zapylaev.game.truetennis.core.net.communicator.INetCommunicator;
-import org.zapylaev.game.truetennis.core.net.communicator.NetCommunicatorBuilder;
-import org.zapylaev.game.truetennis.core.net.communicator.NetGame;
 import org.zapylaev.game.truetennis.core.screen.GameController;
-import org.zapylaev.game.truetennis.core.screen.menu.GamesListGame;
 import org.zapylaev.game.truetennis.core.screen.menu.OptionsMenu;
 import org.zapylaev.game.truetennis.core.screen.menu.StartScreen;
-
-import java.util.*;
 
 public class TrueTennisMain extends Game {
 

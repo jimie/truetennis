@@ -70,4 +70,9 @@ public class WinEffect implements IEffect<Team> {
     public void stop() {
         mPlaying = false;
     }
+
+    @Override
+    public void dispose() {
+
+    }
 }

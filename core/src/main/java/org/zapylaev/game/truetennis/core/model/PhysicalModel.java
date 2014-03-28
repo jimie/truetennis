@@ -38,12 +38,8 @@ import org.zapylaev.game.truetennis.core.domain.Player;
 import org.zapylaev.game.truetennis.core.domain.Team;
 
 import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class PhysicalModel implements IModel {
-    public static final int MODEL_UPDATE_FPS = 60;
     private DebugRenderer mDebugRenderer;
     private final World mWorld;
     private final Box2dBall mBox2dBall;
@@ -57,7 +53,6 @@ public class PhysicalModel implements IModel {
     private final Player mRightPlayer;
     private final Ball mBall;
     private int mWinScore;
-    private final ScheduledExecutorService mExecutor;
     private final ITouchControls mTouchControls;
 
     public PhysicalModel() {
@@ -88,16 +83,6 @@ public class PhysicalModel implements IModel {
         mField.setBall(mBall);
         mJson = new Json();
         mWinScore = GamePrefs.getInstance().getWinScore();
-
-        mExecutor = Executors.newSingleThreadScheduledExecutor();
-        mExecutor.scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                for (IModelListener modelListener : mModelListeners) {
-                    modelListener.onModelUpdate(obtainModelState());
-                }
-            }
-        }, 0, 1000 / MODEL_UPDATE_FPS, TimeUnit.MILLISECONDS);
         mTouchControls = new JointControls(mWorld);
     }
 
@@ -111,6 +96,9 @@ public class PhysicalModel implements IModel {
         mWorld.step(Gdx.graphics.getDeltaTime(), 8, 3);
         checkGoal();
         checkWin();
+        for (IModelListener modelListener : mModelListeners) {
+            modelListener.onModelUpdate(obtainModelState());
+        }
     }
 
     private String obtainModelState() {
@@ -159,7 +147,6 @@ public class PhysicalModel implements IModel {
         if (mDebugRenderer != null) {
             mDebugRenderer.dispose();
         }
-        mExecutor.shutdown();
     }
 
     @Override

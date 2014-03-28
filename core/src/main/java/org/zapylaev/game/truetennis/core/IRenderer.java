@@ -26,7 +26,6 @@ package org.zapylaev.game.truetennis.core;
 
 import com.badlogic.gdx.utils.Disposable;
 import org.zapylaev.game.truetennis.core.domain.Field;
-import org.zapylaev.game.truetennis.core.domain.Team;
 
 /**
  * @author k.zapylaev <zapylaev@gmail.com>

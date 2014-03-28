@@ -47,15 +47,21 @@ public class Assets implements Disposable {
     public Texture player;
     public Texture ball;
     public Texture splash;
+    public Texture bg;
+    public Texture bgNormalMap;
     public BitmapFont fontDroidSans17;
 
     public void init() {
         player = new Texture(Gdx.files.internal("img/player.png"));
         ball = new Texture(Gdx.files.internal("img/ball.png"));
         splash = new Texture(Gdx.files.internal("img/splash.png"));
+        bg = new Texture(Gdx.files.internal("img/bg.png"));
+        bgNormalMap = new Texture(Gdx.files.internal("img/bg_normal_map.png"));
         player.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         ball.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         splash.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        bg.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        bgNormalMap.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
         fontDroidSans17 = new BitmapFont(Gdx.files.internal("fonts/DroidSans17.fnt"));
         fontDroidSans17.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
@@ -66,6 +72,8 @@ public class Assets implements Disposable {
         player.dispose();
         ball.dispose();
         splash.dispose();
+        bg.dispose();
+        bgNormalMap.dispose();
         fontDroidSans17.dispose();
     }
 }
