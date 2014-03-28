@@ -36,7 +36,7 @@ import org.zapylaev.game.truetennis.core.utils.ShaderHelper;
 
 public class BallLightEffect implements IEffect<Ball> {
 
-    public static final float DEFAULT_LIGHT_Z = 0.1f;
+    public static final float DEFAULT_LIGHT_Z = 0.02f;
     public static final float AMBIENT_INTENSITY = 0.3f;
     public static final float LIGHT_INTENSITY = 1.4f;
     public static final Vector3 LIGHT_COLOR = new Vector3(1f, 0.8f, 0.6f);
