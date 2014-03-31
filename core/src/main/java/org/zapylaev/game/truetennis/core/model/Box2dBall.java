@@ -35,8 +35,8 @@ import com.badlogic.gdx.physics.box2d.World;
  * @author k.zapylaev <zapylaev@gmail.com>
  */
 class Box2dBall {
-    public static final float RADIUS = 0.3f;
-    private static final float DENSITY = 0.2f;
+    public static final float RADIUS = 0.22f;
+    private static final float DENSITY = 0.4f;
     private static final float FRICTION = 1f;
     private static final float RESTITUTION = 1f;
     private final Body mBody;
