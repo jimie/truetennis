@@ -49,7 +49,7 @@ public class GamePrefs {
     }
 
     public int getWinScore() {
-        return mPreferences.getInteger(WIN_SCORE, 2);
+        return mPreferences.getInteger(WIN_SCORE, 3);
     }
 
     public void setWinScore(int winScore) {
