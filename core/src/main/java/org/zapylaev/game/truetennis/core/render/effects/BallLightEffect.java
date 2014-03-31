@@ -39,9 +39,9 @@ public class BallLightEffect implements IEffect<Ball> {
     public static final float DEFAULT_LIGHT_Z = 0.02f;
     public static final float AMBIENT_INTENSITY = 0.3f;
     public static final float LIGHT_INTENSITY = 1.4f;
-    public static final Vector3 LIGHT_COLOR = new Vector3(1f, 0.8f, 0.6f);
-    public static final Vector3 AMBIENT_COLOR = new Vector3(0.6f, 0.6f, 1f);
-    public static final Vector3 FALLOFF = new Vector3(.4f, 3f, 20f);
+    public static final Vector3 LIGHT_COLOR = new Vector3(1.0f, 0.8f, 0.6f);
+    public static final Vector3 AMBIENT_COLOR = new Vector3(1.0f, 1.0f, 1.0f);
+    public static final Vector3 FALLOFF = new Vector3(0.4f, 3.0f, 20.0f);
 
     private OrthographicCamera mGameCamera;
     private Texture mBgTexture;
